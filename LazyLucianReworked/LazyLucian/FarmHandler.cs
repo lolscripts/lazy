@@ -1,0 +1,52 @@
+﻿using System.Linq;
+using EloBuddy;
+using EloBuddy.SDK;
+using EloBuddy.SDK.Events;
+using EloBuddy.SDK.Menu.Values;
+using SharpDX;
+
+namespace LazyLucian
+{
+    internal class FarmHandler
+    {
+        public static void LaneClear()
+        {
+            var minion =
+                EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy,
+                    ObjectManager.Player.Position, 500);
+
+            if (minion != null && (Init.FarmMenu["spellWeaving"].Cast<CheckBox>().CurrentValue && Events.PassiveUp) ||
+                Orbwalker.IsAutoAttacking ||
+                ObjectManager.Player.IsDashing())
+                return;
+
+            if (Spells.Q.IsReady() && Init.FarmMenu["useQfarm"].Cast<CheckBox>().CurrentValue)
+            {
+                var minions =
+                    EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy,
+                        ObjectManager.Player.Position, Spells.Q.Range);
+                var aiMinions = minions as Obj_AI_Minion[] ?? minions.ToArray();
+
+                for (var index = 0; index < aiMinions.Length; index++)
+                {
+                    var m = aiMinions[index];
+                    var p = new Geometry.Polygon.Rectangle((Vector2) ObjectManager.Player.ServerPosition,
+                        ObjectManager.Player.ServerPosition.Extend(m.ServerPosition, Spells.Q1.Range), 65);
+                    if (aiMinions.Count(x => p.IsInside(x.ServerPosition)) < 3) continue;
+                    Spells.Q.Cast(m);
+                    break;
+                }
+            }
+
+            if (!Spells.W.IsReady() || !Init.FarmMenu["useWfarm"].Cast<CheckBox>().CurrentValue) return;
+            {
+                var minions =
+                    EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy,
+                        ObjectManager.Player.Position, 500)
+                        .FirstOrDefault(x => x.IsValidTarget(Spells.W.Range));
+                if (minions != null)
+                    Spells.W.Cast(minions);
+            }
+        }
+    }
+}
