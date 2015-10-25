@@ -48,5 +48,34 @@ namespace LazyLucian
                     Spells.W.Cast(minions);
             }
         }
+
+        public static void JungleClear()
+        {
+            if ((Init.FarmMenu["spellWeaving"].Cast<CheckBox>().CurrentValue && Events.PassiveUp) ||
+                Orbwalker.IsAutoAttacking ||
+                ObjectManager.Player.IsDashing())
+                return;
+
+            if (Spells.Q.IsReady() && Init.FarmMenu["useQjungle"].Cast<CheckBox>().CurrentValue)
+            {
+                var monsters =
+                    EntityManager.MinionsAndMonsters.GetJungleMonsters(ObjectManager.Player.ServerPosition,
+                        Spells.Q.Range)
+                        .FirstOrDefault(x => x.IsValidTarget(Spells.Q.Range));
+                if (monsters != null)
+                    Spells.Q.Cast(monsters);
+
+            }
+
+            if (!Spells.W.IsReady() || !Init.FarmMenu["useWjungle"].Cast<CheckBox>().CurrentValue) return;
+            {
+                var monsters =
+                    EntityManager.MinionsAndMonsters.GetJungleMonsters(ObjectManager.Player.ServerPosition,
+                        Spells.Q.Range)
+                        .FirstOrDefault(x => x.IsValidTarget(Spells.Q.Range));
+                if (monsters != null)
+                    Spells.W.Cast(monsters);
+            }
+        }
     }
 }

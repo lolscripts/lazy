@@ -103,11 +103,13 @@ namespace LazyLucian
             FarmMenu = Menu.AddSubMenu("Farm", "Farm");
             FarmMenu.AddGroupLabel("Farm Settings");
             FarmMenu.AddLabel("Q - Piercing Light");
-            FarmMenu.Add("useQfarm", new CheckBox("Use in Laneclear"));
+            FarmMenu.Add("useQfarm", new CheckBox("Use in LaneClear"));
+            FarmMenu.Add("useQjungle", new CheckBox("Use in JungleClear"));
             FarmMenu.AddSeparator();
 
             FarmMenu.AddLabel("W - Ardent Blaze");
             FarmMenu.Add("useWfarm", new CheckBox("Use in LaneClear"));
+            FarmMenu.Add("useWjungle", new CheckBox("Use in JungleClear"));
             FarmMenu.AddSeparator();
 
             FarmMenu.AddLabel("Misc Settings (Farm)");
