@@ -83,7 +83,6 @@ namespace LazyLucian
             {
                 case SpellSlot.Q:
                 case SpellSlot.W:
-                    Orbwalker.OrbwalkTo(Game.CursorPos);
                     Orbwalker.ResetAutoAttack();
                     break;
                 case SpellSlot.R:
