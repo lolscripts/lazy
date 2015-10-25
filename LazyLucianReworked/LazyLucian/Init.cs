@@ -44,15 +44,12 @@ namespace LazyLucian
             ComboMenu.AddSeparator();
 
             ComboMenu.AddLabel("E - Relentless Pursuit");
-            ComboMenu.Add("useEcombo", new CheckBox("Use in Spellrotation"));
-            ComboMenu.Add("useEgap", new CheckBox("Use as gapcloser"));
+            ComboMenu.Add("useEcombo", new CheckBox("Use E Logic"));
             ComboMenu.AddSeparator();
 
             ComboMenu.AddLabel("R - The Culling");
             ComboMenu.Add("useRkillable", new CheckBox("Use if target is killable"));
             ComboMenu.Add("useRlock", new CheckBox("Lock on Target"));
-            ComboMenu.AddSeparator();
-            ComboMenu.Add("useRmanually", new KeyBind("Use manually", false, KeyBind.BindTypes.HoldActive, 84));
             ComboMenu.AddSeparator();
 
             ComboMenu.AddLabel("Misc Settings (Combo)");

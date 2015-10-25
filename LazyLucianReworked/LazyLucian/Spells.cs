@@ -95,7 +95,7 @@ namespace LazyLucian
             var target = TargetSelector.SelectedTarget != null &&
                          TargetSelector.SelectedTarget.Distance(ObjectManager.Player) < 20000
                 ? TargetSelector.SelectedTarget
-                : TargetSelector.GetTarget(1200, DamageType.Physical);
+                : TargetSelector.GetTarget(1800, DamageType.Physical);
 
             var predPos = Q1.GetPrediction(target);
             var minions = EntityManager.MinionsAndMonsters.EnemyMinions;
@@ -191,29 +191,46 @@ namespace LazyLucian
         public static void CastEcombo()
         {
             var target = TargetSelector.GetTarget(1400, DamageType.Physical);
-            var vec = target.ServerPosition.Extend(ObjectManager.Player.Position,
-                target.ServerPosition.Distance(target.ServerPosition) + 400);
+            var direction1 = (ObjectManager.Player.ServerPosition - target.ServerPosition).To2D().Normalized();
+            var direction2 = (target.ServerPosition - ObjectManager.Player.ServerPosition).To2D().Normalized();
+            const int maxDistance = 475;
+            const int stepSize = 20;
 
-            if (target.Distance(ObjectManager.Player.ServerPosition) <=
-                500 && !Q.IsReady() &&
-                ((!W.IsReady() || W.GetPrediction(target).HitChance < HitChance.Medium)) &&
-                Helpers.IsSafePosition((Vector3) vec) && !vec.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall))
+            if (target.HealthPercent <= ObjectManager.Player.HealthPercent &&
+                (ObjectManager.Player.HealthPercent > 30 ||
+                Helpers.GetComboDamage(target) >= target.Health) &&
+                target.Distance(ObjectManager.Player) <=975)
             {
-                E.Cast((Vector3) vec);
+                for (var step = 0f; step < 360; step += stepSize)
+                {
+                    var currentAngel = step*(float) Math.PI/90;
+                    var currentCheckPoint = target.ServerPosition.To2D() +
+                                            maxDistance*direction2.Rotated(currentAngel);
+
+                    if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
+                        currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall)) continue;
+                    {
+                        E.Cast((Vector3) currentCheckPoint);
+                    }
+                }
             }
-        }
 
-        public static void CastEgap()
-        {
-            var target = TargetSelector.GetTarget(1400, DamageType.Physical);
-            var vec = ObjectManager.Player.ServerPosition.Extend(target, (E.Range));
-
-            if (target.Distance(ObjectManager.Player.ServerPosition) < (300 + E.Range) ||
-                target.Distance(ObjectManager.Player.Position) > (500 + E.Range) ||
-                (!Helpers.IsSafePosition((Vector3) vec) && !(target.HealthPercent <= 30)) ||
-                vec.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall)) return;
+            else if (target.HealthPercent > ObjectManager.Player.HealthPercent &&
+                target.Distance(ObjectManager.Player) <= 400)
             {
-                E.Cast((Vector3) vec);
+                for (var step = 0f; step < 360; step += stepSize)
+                {
+                    var currentAngel = step * (float)Math.PI / 90;
+                    var currentCheckPoint = target.ServerPosition.To2D() +
+                                            maxDistance * direction1.Rotated(currentAngel);
+
+                    if (!Helpers.IsSafePosition((Vector3)currentCheckPoint) ||
+                        currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall))
+                        continue;
+                    {
+                        E.Cast((Vector3)currentCheckPoint);
+                    }
+                }
             }
         }
 
@@ -298,27 +315,37 @@ namespace LazyLucian
         *                           |___/        
         */
 
+
         public static void CastR()
         {
-            var target = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-            if (!target.IsValidTarget(R.Range) ||
-                (target.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <= 400))
-                return;
+            var unit = TargetSelector.SelectedTarget != null &&
+                       TargetSelector.SelectedTarget.Distance(ObjectManager.Player) <= 1500
+                ? TargetSelector.SelectedTarget
+                : TargetSelector.GetTarget(1500, DamageType.Physical);
 
-            if (Rdmg(target) >= target.Health)
-            {
-                R.Cast(target.ServerPosition);
-            }
-        }
+            if (!unit.IsValidTarget(R.Range)) return;
 
-        public static double Rdmg(Obj_AI_Base unit)
-        {
-            var shot = (int) (7.5 + new[] {7.5, 9, 10.5}[R.Level - 1]*1/ObjectManager.Player.AttackDelay);
-            var maxShot = new[] {26, 30, 33}[R.Level - 1];
-            return ObjectManager.Player.CalculateDamageOnUnit(
-                unit, DamageType.Physical,
-                (float) ((new[] {40, 50, 60}[R.Level - 1] + 0.25*ObjectManager.Player.FlatPhysicalDamageMod +
-                          0.1*ObjectManager.Player.FlatMagicDamageMod)*(shot > maxShot ? maxShot : shot)));
+            var col = R.GetPrediction(unit);
+            var allies = EntityManager.Heroes.Allies.Count(
+                allied => !allied.IsDead && allied.Distance(unit) <= 500);
+            var rDmg = ObjectManager.Player.GetSpellDamage(unit, SpellSlot.R)*Helpers.NumShots();
+            var tDis = ObjectManager.Player.Distance(unit.ServerPosition);
+
+            if (allies != 0 || (!(unit.Distance(ObjectManager.Player.ServerPosition) > 500)) ||
+                col.HitChance == HitChance.Collision) return;
+
+            if (rDmg*0.8 > unit.Health && tDis < 800 && !Q.IsReady())
+                R.Cast(unit);
+            else if (rDmg*0.7 > unit.Health && tDis < 900)
+                R.Cast(unit);
+            else if (rDmg*0.6 > unit.Health && tDis < 1000)
+                R.Cast(unit);
+            else if (rDmg*0.5 > unit.Health && tDis < 1100)
+                R.Cast(unit);
+            else if (rDmg*0.4 > unit.Health && tDis < 1200)
+                R.Cast(unit);
+            else if (rDmg*0.3 > unit.Health && tDis < 1300)
+                R.Cast(unit);
         }
 
         public static void LockR() //credits Brian(L$)

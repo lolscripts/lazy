@@ -45,23 +45,11 @@ namespace LazyLucian
                 }
             }
 
-            if (Spells.E.IsReady())
+            if (!Spells.E.IsReady()) return;
             {
                 if (Init.ComboMenu["useEcombo"].Cast<CheckBox>().CurrentValue)
                 {
                     Spells.CastEcombo();
-                }
-                if (Init.ComboMenu["useEgap"].Cast<CheckBox>().CurrentValue)
-                {
-                    Spells.CastEgap();
-                }
-            }
-
-            if (!Spells.R.IsReady()) return;
-            {
-                if (Init.ComboMenu["useRkillable"].Cast<CheckBox>().CurrentValue)
-                {
-                    Spells.CastR();
                 }
             }
         }

@@ -202,7 +202,7 @@ namespace LazyLucian
             {
                 return true;
             }
-            return allies + 1 > enemies - lhEnemies;
+            return allies > enemies - lhEnemies;
         }
 
         public class CircInter
@@ -236,6 +236,25 @@ namespace LazyLucian
                 var dist2 = target.Distance(Inter2, true);
                 return dist1 > dist2 ? Inter2 : Inter1;
             }
+        }
+
+        public static float GetComboDamage(AIHeroClient target)
+        {
+            var damage = 0f;
+            if (Spells.Q.IsReady())
+            {
+                damage += ObjectManager.Player.GetSpellDamage(target, SpellSlot.Q);
+            }
+            if (Spells.Q.IsReady())
+            {
+                damage += ObjectManager.Player.GetSpellDamage(target, SpellSlot.W);
+            }
+            if (Spells.E.IsReady())
+            {
+                damage += ObjectManager.Player.GetAutoAttackDamage(target)*1.4f;
+            }
+
+            return damage;
         }
     }
 }

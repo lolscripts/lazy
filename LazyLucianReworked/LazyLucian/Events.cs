@@ -15,20 +15,20 @@ namespace LazyLucian
 
         public static void OnTick(EventArgs args)
         {
-            if (ObjectManager.Player.IsRecalling() && MenuGUI.IsChatOpen) return;
-
-            if (Init.ComboMenu["useRmanually"].Cast<KeyBind>().CurrentValue)
-            {
-                var target = TargetSelector.GetTarget(Spells.R.Range, DamageType.Physical);
-                if (target == null) return;
-                {
-                    Spells.R.Cast(target);
-                }
-            }
+            if (ObjectManager.Player.IsRecalling() || MenuGUI.IsChatOpen) return;
 
             if (Init.MiscMenu["useKs"].Cast<CheckBox>().CurrentValue)
             {
                 Spells.Ks();
+            }
+            if (Init.ComboMenu["useRkillable"].Cast<CheckBox>().CurrentValue)
+            {
+                
+                    if (Game.Time - RLastCast > 5)
+                    {
+                        Spells.CastR();
+                    }
+                
             }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
@@ -47,17 +47,27 @@ namespace LazyLucian
 
         public static void OnGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
         {
-            var dashPosition = e.Start.Extend(ObjectManager.Player.Position,
-                e.Start.Distance(ObjectManager.Player.ServerPosition) + Spells.E.Range);
+            var playerPosition = ObjectManager.Player.Position.To2D();
+            var direction1 = (ObjectManager.Player.ServerPosition - sender.ServerPosition).To2D().Normalized();
+            const int distance = 475;
+            const int stepSize = 40;
 
             if (!Spells.E.IsReady() || !sender.IsValidTarget(Spells.E.Range) ||
                 !Init.MiscMenu["gapcloser"].Cast<CheckBox>().CurrentValue || e.Type == Gapcloser.GapcloserType.Targeted)
                 return;
             {
-                if ((!dashPosition.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall)) &&
-                    Helpers.IsSafePosition((Vector3) dashPosition))
+                for (var step = 0f; step < 360; step += stepSize)
                 {
-                    Spells.E.Cast((Vector3) dashPosition);
+                    var currentAngel = step * (float)Math.PI / 90;
+                    var currentCheckPoint = playerPosition +
+                                            distance * direction1.Rotated(currentAngel);
+
+                    if (!Helpers.IsSafePosition((Vector3)currentCheckPoint) ||
+                        currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall))
+                        continue;
+                    {
+                        Spells.E.Cast((Vector3)currentCheckPoint);
+                    }
                 }
             }
         }
