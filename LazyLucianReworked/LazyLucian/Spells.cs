@@ -25,6 +25,7 @@ namespace LazyLucian
 
         public static Spell.Targeted Q = new Spell.Targeted(SpellSlot.Q, 675);
         public static Spell.Skillshot W = new Spell.Skillshot(SpellSlot.W, 1200, SkillShotType.Linear, 300, 1600, 80);
+        public static Spell.Skillshot W1 = new Spell.Skillshot(SpellSlot.W, 500, SkillShotType.Linear, 300, 1600, 80);
         public static Spell.Skillshot E = new Spell.Skillshot(SpellSlot.E, 475, SkillShotType.Linear);
         public static Spell.Skillshot R = new Spell.Skillshot(SpellSlot.R, 1400, SkillShotType.Linear, 500, 2800, 110);
 
@@ -155,8 +156,8 @@ namespace LazyLucian
             var target = TargetSelector.GetTarget(600, DamageType.Magical);
 
             if (!target.IsValidTarget(500) ||
-                (W.GetPrediction(target).HitChance == HitChance.Collision) ||
-                (W.GetPrediction(target).HitChance < HitChance.Medium))
+                (W1.GetPrediction(target).HitChance == HitChance.Collision) ||
+                (W1.GetPrediction(target).HitChance < HitChance.Medium))
                 return;
             {
                 W.Cast(target);
