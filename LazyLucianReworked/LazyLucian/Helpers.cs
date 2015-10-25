@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
@@ -27,6 +25,7 @@ namespace LazyLucian
         public static float Wmana;
         public static float Emana;
         public static float Rmana;
+
         //-------------------------------------------------------------------------------------------------------------------
         /*
         *       _____      _     __  __                   
@@ -78,11 +77,11 @@ namespace LazyLucian
         public static double AaDmg(Obj_AI_Base target)
         {
             if (ObjectManager.Player.Level > 12)
-                return ObjectManager.Player.GetAutoAttackDamage(target)*1.3;
+                return ObjectManager.Player.GetAutoAttackDamage(target) * 1.3;
             if (ObjectManager.Player.Level > 6)
-                return ObjectManager.Player.GetAutoAttackDamage(target)*1.4;
+                return ObjectManager.Player.GetAutoAttackDamage(target) * 1.4;
             if (ObjectManager.Player.Level > 0)
-                return ObjectManager.Player.GetAutoAttackDamage(target)*1.5;
+                return ObjectManager.Player.GetAutoAttackDamage(target) * 1.5;
             return 0;
         }
 
@@ -124,10 +123,10 @@ namespace LazyLucian
             var res = new CircInter();
             var dx = from.X - to.X;
             var dy = from.Y - to.Y;
-            var a = dx*dx + dy*dy;
-            var b = 2*(dx*(to.X - cPos.X) + dy*(to.Y - cPos.Y));
-            var c = (to.X - cPos.X)*(to.X - cPos.X) + (to.Y - cPos.Y)*(to.Y - cPos.Y) - radius*radius;
-            var det = b*b - 4*a*c;
+            var a = dx * dx + dy * dy;
+            var b = 2 * (dx * (to.X - cPos.X) + dy * (to.Y - cPos.Y));
+            var c = (to.X - cPos.X) * (to.X - cPos.X) + (to.Y - cPos.Y) * (to.Y - cPos.Y) - radius * radius;
+            var det = b * b - 4 * a * c;
 
             if ((a <= 0.0000001) || (det < 0))
             {
@@ -136,73 +135,17 @@ namespace LazyLucian
             else if (det == 0)
             {
                 res.One = true;
-                var t = -b/(2*a);
-                res.Inter1 = new Vector2(to.X + t*dx, to.Y + t*dy);
+                var t = -b / (2 * a);
+                res.Inter1 = new Vector2(to.X + t * dx, to.Y + t * dy);
             }
             else
             {
-                var t = (float) ((-b + Math.Sqrt(det))/(2*a));
-                res.Inter1 = new Vector2(to.X + t*dx, to.Y + t*dy);
-                t = (float) ((-b - Math.Sqrt(det))/(2*a));
-                res.Inter2 = new Vector2(to.X + t*dx, to.Y + t*dy);
+                var t = (float)((-b + Math.Sqrt(det)) / (2 * a));
+                res.Inter1 = new Vector2(to.X + t * dx, to.Y + t * dy);
+                t = (float)((-b - Math.Sqrt(det)) / (2 * a));
+                res.Inter2 = new Vector2(to.X + t * dx, to.Y + t * dy);
             }
             return res;
-        }
-
-        //-------------------------------------------------------------------------------------------------------------------
-        /*
-        *      _    _ _ _      _____ _           _       
-        *     | |  | | | |    / ____| |         | |      
-        *     | |  | | | |_  | (___ | |__   ___ | |_ ___ 
-        *     | |  | | | __|  \___ \| '_ \ / _ \| __/ __|
-        *     | |__| | | |_   ____) | | | | (_) | |_\__ \
-        *      \____/|_|\__| |_____/|_| |_|\___/ \__|___/
-        *                               *Credits Sebby(L$)          
-        *                                                
-        */
-
-        public static double NumShots()
-        {
-            var num = 7.5;
-            switch (Spells.R.Level)
-            {
-                case 1:
-                    num += 7.5*ObjectManager.Player.AttackSpeedMod*0.5;
-                    break;
-                case 2:
-                    num += 9*ObjectManager.Player.AttackSpeedMod*0.5;
-                    break;
-                case 3:
-                    num += 10.5*ObjectManager.Player.AttackSpeedMod*0.5;
-                    break;
-            }
-            return num;
-        }
-
-        public static List<AIHeroClient> GetLowaiAiHeroClients(Vector3 position, float range)
-        {
-            return
-                EntityManager.Heroes.Enemies.Where(
-                    hero => hero.IsValidTarget() && (hero.Distance(position) <= 1000) && hero.HealthPercent <= 15)
-                    .ToList();
-        }
-
-        public static bool IsSafePosition(Vector3 position)
-        {
-            var underTurret =
-                EntityManager.Turrets.Enemies.FirstOrDefault(
-                    turret => !turret.IsDead && turret.Distance(position) <= 950);
-            var allies = EntityManager.Heroes.Allies.Count(
-                allied => !allied.IsDead && allied.Distance(position) <= 800);
-            var enemies = position.CountEnemiesInRange(1000);
-            var lhEnemies = GetLowaiAiHeroClients(position, 800).Count();
-            if (underTurret != null) return false;
-
-            if (enemies == 1)
-            {
-                return true;
-            }
-            return allies + 1 > enemies - lhEnemies;
         }
 
         public class CircInter
@@ -236,6 +179,36 @@ namespace LazyLucian
                 var dist2 = target.Distance(Inter2, true);
                 return dist1 > dist2 ? Inter2 : Inter1;
             }
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------
+        /*
+        *      _    _ _ _      _____ _           _       
+        *     | |  | | | |    / ____| |         | |      
+        *     | |  | | | |_  | (___ | |__   ___ | |_ ___ 
+        *     | |  | | | __|  \___ \| '_ \ / _ \| __/ __|
+        *     | |__| | | |_   ____) | | | | (_) | |_\__ \
+        *      \____/|_|\__| |_____/|_| |_|\___/ \__|___/
+        *                               *Credits Sebby(L$)          
+        *                                                
+        */
+
+        public static double NumShots()
+        {
+            var num = 7.5;
+            switch (Spells.R.Level)
+            {
+                case 1:
+                    num += 7.5 * ObjectManager.Player.AttackSpeedMod * 0.5;
+                    break;
+                case 2:
+                    num += 9 * ObjectManager.Player.AttackSpeedMod * 0.5;
+                    break;
+                case 3:
+                    num += 10.5 * ObjectManager.Player.AttackSpeedMod * 0.5;
+                    break;
+            }
+            return num;
         }
     }
 }

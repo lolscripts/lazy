@@ -190,30 +190,23 @@ namespace LazyLucian
 
         public static void CastEcombo()
         {
-            var target = TargetSelector.GetTarget(1400, DamageType.Physical);
-            var vec = target.ServerPosition.Extend(ObjectManager.Player.Position,
-                target.ServerPosition.Distance(target.ServerPosition) + 400);
+            var target = TargetSelector.GetTarget(1200, DamageType.Magical);
 
             if (target.Distance(ObjectManager.Player.ServerPosition) <=
                 500 && !Q.IsReady() &&
-                ((!W.IsReady() || W.GetPrediction(target).HitChance < HitChance.Medium)) &&
-                Helpers.IsSafePosition((Vector3) vec) && !vec.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall))
+                ((!W.IsReady() || W.GetPrediction(target).HitChance < HitChance.Medium)))
             {
-                E.Cast((Vector3) vec);
+                E.Cast(Game.CursorPos);
             }
         }
 
         public static void CastEgap()
         {
-            var target = TargetSelector.GetTarget(1400, DamageType.Physical);
-            var vec = ObjectManager.Player.ServerPosition.Extend(target, (E.Range));
+            var target = TargetSelector.GetTarget(1000 + E.Range, DamageType.Physical);
 
-            if (target.Distance(ObjectManager.Player.ServerPosition) < (300 + E.Range) ||
-                target.Distance(ObjectManager.Player.Position) > (500 + E.Range) ||
-                (!Helpers.IsSafePosition((Vector3) vec) && !(target.HealthPercent <= 30)) ||
-                vec.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall)) return;
+            if (target.Distance(ObjectManager.Player.ServerPosition) > 900) return;
             {
-                E.Cast((Vector3) vec);
+                E.Cast((Vector3) ObjectManager.Player.ServerPosition.Extend(target.ServerPosition, E.Range));
             }
         }
 
@@ -269,17 +262,17 @@ namespace LazyLucian
                         }
 
                         if (!bestChamp.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
-                            Helpers.IsSafePosition((Vector3) bestChamp))
+                            (bestChamp.CountEnemiesInRange(800) <= 2))
                         {
                             E.Cast((Vector3) bestChamp);
                         }
                         else if (!bestMinion.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
-                                 Helpers.IsSafePosition((Vector3) bestMinion))
+                                 bestMinion.CountEnemiesInRange(800) <= 2)
                         {
                             E.Cast((Vector3) bestMinion);
                         }
                         else if (!bestMonster.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
-                                 Helpers.IsSafePosition((Vector3) bestMonster))
+                                 bestMonster.CountEnemiesInRange(800) <= 2)
                         {
                             E.Cast((Vector3) bestMonster);
                         }

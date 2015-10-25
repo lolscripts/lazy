@@ -41,7 +41,6 @@ namespace LazyLucian
             else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
                 FarmHandler.LaneClear();
-                FarmHandler.JungleClear();
             }
         }
 
@@ -55,7 +54,7 @@ namespace LazyLucian
                 return;
             {
                 if ((!dashPosition.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall)) &&
-                    Helpers.IsSafePosition((Vector3) dashPosition))
+                    dashPosition.CountEnemiesInRange(800) <= 2)
                 {
                     Spells.E.Cast((Vector3) dashPosition);
                 }
