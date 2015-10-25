@@ -77,7 +77,10 @@ namespace LazyLucian
                     else if (target.IsValidTarget(Q1.Range))
                     {
                         CastExtendedQ();
-                        DashToExtendedQ();
+                        if (Helpers.IsSafePosition(target.ServerPosition))
+                        {
+                            DashToExtendedQ(); 
+                        }
                     }
                 }
             }
@@ -204,9 +207,9 @@ namespace LazyLucian
             {
                 for (var step = 0f; step < 360; step += stepSize)
                 {
-                    var currentAngel = step*(float) Math.PI/90;
+                    var currentAngle = step*(float) Math.PI/90;
                     var currentCheckPoint = target.ServerPosition.To2D() +
-                                            maxDistance*direction2.Rotated(currentAngel);
+                                            maxDistance*direction2.Rotated(currentAngle);
 
                     if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
                         currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall)) continue;
@@ -221,9 +224,9 @@ namespace LazyLucian
             {
                 for (var step = 0f; step < 360; step += stepSize)
                 {
-                    var currentAngel = step * (float)Math.PI / 90;
+                    var currentAngle = step * (float)Math.PI / 90;
                     var currentCheckPoint = target.ServerPosition.To2D() +
-                                            maxDistance * direction1.Rotated(currentAngel);
+                                            maxDistance * direction1.Rotated(currentAngle);
 
                     if (!Helpers.IsSafePosition((Vector3)currentCheckPoint) ||
                         currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall))
