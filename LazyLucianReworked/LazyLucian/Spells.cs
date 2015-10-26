@@ -169,7 +169,7 @@ namespace LazyLucian
 
         public static void CastWcombo()
         {
-            var target = TargetSelector.GetTarget(1200, DamageType.Magical);
+            var target = TargetSelector.GetTarget(1500, DamageType.Magical);
 
             if (!target.IsValidTarget(W.Range) ||
                 (W.GetPrediction(target).HitChance == HitChance.Collision) ||
@@ -194,7 +194,7 @@ namespace LazyLucian
 
         public static void CastEcombo()
         {
-            var target = TargetSelector.GetTarget(1400, DamageType.Physical);
+            var target = TargetSelector.GetTarget(1500, DamageType.Physical);
             var direction1 = (ObjectManager.Player.ServerPosition - target.ServerPosition).To2D().Normalized();
             var direction2 = (target.ServerPosition - ObjectManager.Player.ServerPosition).To2D().Normalized();
             const int maxDistance = 475;
