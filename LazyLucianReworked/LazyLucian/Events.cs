@@ -4,7 +4,9 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Constants;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu.Values;
+using EloBuddy.SDK.Rendering;
 using SharpDX;
+using Color = System.Drawing.Color;
 
 namespace LazyLucian
 {
@@ -127,6 +129,30 @@ namespace LazyLucian
                 return PassiveUp = true;
             }
             return false;
+        }
+
+        public static void OnDraw(EventArgs args)
+        {
+            if (Init.DrawMenu["drawQ"].Cast<CheckBox>().CurrentValue)
+            {
+                new Circle { Color = Color.Chartreuse, Radius = Spells.Q.Range }.Draw(ObjectManager.Player.Position);               
+            }
+            if (Init.DrawMenu["drawQextended"].Cast<CheckBox>().CurrentValue)
+            {
+                new Circle { Color = Color.Fuchsia, Radius = Spells.Q1.Range }.Draw(ObjectManager.Player.Position);
+            }
+            if (Init.DrawMenu["drawW"].Cast<CheckBox>().CurrentValue)
+            {
+                new Circle { Color = Color.Black, Radius = Spells.W.Range }.Draw(ObjectManager.Player.Position);
+            }
+            if (Init.DrawMenu["drawE"].Cast<CheckBox>().CurrentValue)
+            {
+                new Circle { Color = Color.Firebrick, Radius = Spells.E.Range }.Draw(ObjectManager.Player.Position);
+            }
+            if (Init.DrawMenu["drawR"].Cast<CheckBox>().CurrentValue)
+            {
+                new Circle { Color = Color.DarkBlue, Radius = Spells.R.Range }.Draw(ObjectManager.Player.Position);
+            }
         }
     }
 }

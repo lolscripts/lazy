@@ -21,7 +21,8 @@ namespace LazyLucian
                 return;
 
 
-            if (Spells.Q.IsReady())
+            if (Spells.Q.IsReady() &&
+                ObjectManager.Player.ManaPercent > Init.ComboMenu["qMana"].Cast<Slider>().CurrentValue)
             {
                 if (Init.ComboMenu["useQcombo"].Cast<CheckBox>().CurrentValue)
                 {
@@ -33,7 +34,8 @@ namespace LazyLucian
                 }
             }
 
-            if (Spells.W.IsReady())
+            if (Spells.W.IsReady() &&
+                ObjectManager.Player.ManaPercent > Init.ComboMenu["wMana"].Cast<Slider>().CurrentValue)
             {
                 if (Init.ComboMenu["useWaaRange"].Cast<CheckBox>().CurrentValue)
                 {
@@ -45,7 +47,8 @@ namespace LazyLucian
                 }
             }
 
-            if (!Spells.E.IsReady()) return;
+            if (!Spells.E.IsReady() ||
+                ObjectManager.Player.ManaPercent < Init.ComboMenu["eMana"].Cast<Slider>().CurrentValue) return;
             {
                 if (Init.ComboMenu["useEcombo"].Cast<CheckBox>().CurrentValue)
                 {

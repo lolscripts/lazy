@@ -21,7 +21,8 @@ namespace LazyLucian
                 return;
 
 
-            if (Spells.Q.IsReady())
+            if (Spells.Q.IsReady() &&
+                ObjectManager.Player.ManaPercent > Init.HarassMenu["qMana"].Cast<Slider>().CurrentValue)
             {
                 if (Init.HarassMenu["useQharass"].Cast<CheckBox>().CurrentValue)
                 {
@@ -33,7 +34,8 @@ namespace LazyLucian
                 }
             }
 
-            if (!Spells.W.IsReady()) return;
+            if (!Spells.W.IsReady() ||
+                ObjectManager.Player.ManaPercent < Init.HarassMenu["wMana"].Cast<Slider>().CurrentValue) return;
             {
                 if (Init.HarassMenu["useWaaRange"].Cast<CheckBox>().CurrentValue)
                 {
