@@ -53,7 +53,8 @@ namespace LazyLucian
             const int stepSize = 40;
 
             if (!Spells.E.IsReady() || !sender.IsValidTarget(Spells.E.Range) ||
-                !Init.MiscMenu["gapcloser"].Cast<CheckBox>().CurrentValue || e.Type == Gapcloser.GapcloserType.Targeted)
+                !Init.MiscMenu["gapcloser"].Cast<CheckBox>().CurrentValue ||
+                e.Type == Gapcloser.GapcloserType.Targeted || sender.IsAlly)
                 return;
             {
                 for (var step = 0f; step < 360; step += stepSize)
