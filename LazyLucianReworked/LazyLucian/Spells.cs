@@ -328,15 +328,22 @@ namespace LazyLucian
             var rDmg = ObjectManager.Player.GetSpellDamage(unit, SpellSlot.R)*Helpers.NumShots();
             var tDis = ObjectManager.Player.Distance(unit.ServerPosition);
 
-            if (((unit.Distance(ObjectManager.Player.ServerPosition) < 400) &&
+            if (((unit.Distance(ObjectManager.Player.ServerPosition) < 500) &&
                  ObjectManager.Player.HealthPercent > unit.HealthPercent) ||
                 col.HitChance == HitChance.Collision ||
                 !unit.IsValidTarget() ||
                 unit.HasBuffOfType(BuffType.Invulnerability)) return;
 
-            if (rDmg/1.4 > unit.Health && tDis < 1200)
+            if (!(rDmg/1.4 > unit.Health) || !(tDis < 1200)) return;
             {
                 R.Cast(unit);
+            }
+            {
+                if (unit.Distance(ObjectManager.Player.ServerPosition) <= 500 &&
+                    unit.Health <= (ObjectManager.Player.GetSpellDamage(unit, SpellSlot.Q) + Helpers.AaDmg(unit)))
+                {
+                    R.Cast(unit);
+                }
             }
         }
 
