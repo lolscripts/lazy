@@ -1,4 +1,5 @@
 ﻿using System;
+using EloBuddy;
 using EloBuddy.SDK.Events;
 
 namespace LazyLucian
@@ -12,6 +13,7 @@ namespace LazyLucian
 
         public static void Loading_OnLoadingComplete(EventArgs args)
         {
+            if (ObjectManager.Player.BaseSkinName == ("Lucian"))
             Init.LoadMenu();
         }
     }

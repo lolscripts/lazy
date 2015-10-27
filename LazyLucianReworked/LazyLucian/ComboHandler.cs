@@ -48,14 +48,14 @@ namespace LazyLucian
                 }
             }
 
-            if (Spells.E.IsReady() &&
-                ObjectManager.Player.ManaPercent > Init.ComboMenu["eMana"].Cast<Slider>().CurrentValue)
+            if (!Spells.E.IsReady() ||
+                !(ObjectManager.Player.ManaPercent > Init.ComboMenu["eMana"].Cast<Slider>().CurrentValue)) return;
+            if (Init.ComboMenu["useEcombo"].Cast<CheckBox>().CurrentValue)
             {
-                if (Init.ComboMenu["useEcombo"].Cast<CheckBox>().CurrentValue)
-                {
-                    Spells.CastEcombo();
-                }
-            }          
+                Spells.CastEcombo();
+            }
+
+
         }
     }
 }

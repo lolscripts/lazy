@@ -77,7 +77,7 @@ namespace LazyLucian
                     else if (target.IsValidTarget(Q1.Range))
                     {
                         CastExtendedQ();
-                        if (Helpers.IsSafePosition(target.ServerPosition))
+                        if (Helpers.IsSafePosition(target.ServerPosition) && E.IsReady())
                         {
                             DashToExtendedQ();
                         }
@@ -194,7 +194,7 @@ namespace LazyLucian
 
         public static void CastEcombo()
         {
-            var target = TargetSelector.GetTarget(1500, DamageType.Physical);
+            var target = TargetSelector.GetTarget(2000, DamageType.Physical);
             var direction1 = (ObjectManager.Player.ServerPosition - target.ServerPosition).To2D().Normalized();
             var direction2 = (target.ServerPosition - ObjectManager.Player.ServerPosition).To2D().Normalized();
             const int maxDistance = 475;
@@ -207,7 +207,7 @@ namespace LazyLucian
             {
                 for (var step = 0f; step < 360; step += stepSize)
                 {
-                    var currentAngle = step*(float) Math.PI/90;
+                    var currentAngle = step*(float) Math.PI/180;
                     var currentCheckPoint = target.ServerPosition.To2D() +
                                             maxDistance*direction2.Rotated(currentAngle);
 
@@ -224,7 +224,7 @@ namespace LazyLucian
             {
                 for (var step = 0f; step < 360; step += stepSize)
                 {
-                    var currentAngle = step*(float) Math.PI/90;
+                    var currentAngle = step*(float) Math.PI/120;
                     var currentCheckPoint = target.ServerPosition.To2D() +
                                             maxDistance*direction1.Rotated(currentAngle);
 
@@ -290,16 +290,19 @@ namespace LazyLucian
                         }
 
                         if (!bestChamp.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
+                            !bestChamp.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) &&
                             Helpers.IsSafePosition((Vector3) bestChamp))
                         {
                             E.Cast((Vector3) bestChamp);
                         }
                         else if (!bestMinion.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
+                            !bestMinion.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) &&
                                  Helpers.IsSafePosition((Vector3) bestMinion))
                         {
                             E.Cast((Vector3) bestMinion);
                         }
                         else if (!bestMonster.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
+                            !bestMonster.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) &&
                                  Helpers.IsSafePosition((Vector3) bestMonster))
                         {
                             E.Cast((Vector3) bestMonster);
@@ -323,8 +326,8 @@ namespace LazyLucian
         public static void CastR(AIHeroClient unit)
         {
             var col = R.GetPrediction(unit);
-            //var allies = EntityManager.Heroes.Allies.Count(
-            //  allied => !allied.IsDead && allied.Distance(unit) <= 500);
+            var allies = EntityManager.Heroes.Allies.Count(
+              allied => !allied.IsDead && allied.Distance(unit) <= 500);
             var rDmg = ObjectManager.Player.GetSpellDamage(unit, SpellSlot.R)*Helpers.NumShots();
             var tDis = ObjectManager.Player.Distance(unit.ServerPosition);
 
@@ -332,7 +335,8 @@ namespace LazyLucian
                  ObjectManager.Player.HealthPercent > unit.HealthPercent) ||
                 col.HitChance == HitChance.Collision ||
                 !unit.IsValidTarget() ||
-                unit.HasBuffOfType(BuffType.Invulnerability)) return;
+                unit.HasBuffOfType(BuffType.Invulnerability) ||
+                allies > 1) return;
 
             if (!(rDmg/1.4 > unit.Health) || !(tDis < 1200)) return;
             {

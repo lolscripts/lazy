@@ -32,11 +32,12 @@ namespace LazyLucian
                     ObjectManager.Player.ManaPercent > Init.ComboMenu["rMana"].Cast<Slider>().CurrentValue)
                 {
                     var target = TargetSelector.SelectedTarget != null &&
-                                 TargetSelector.SelectedTarget.Distance(ObjectManager.Player) < 1500
+                                 TargetSelector.SelectedTarget.Distance(ObjectManager.Player) < 2000
                         ? TargetSelector.SelectedTarget
-                        : TargetSelector.GetTarget(1500, DamageType.Physical);
+                        : TargetSelector.GetTarget(2000, DamageType.Physical);
                     {
-                        if (target.IsValidTarget())
+                        if (target.IsValidTarget() &&
+                            !target.HasBuffOfType(BuffType.Invulnerability))
                         Spells.CastR(target);
                     }
                 }
