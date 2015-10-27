@@ -79,7 +79,7 @@ namespace LazyLucian
                         CastExtendedQ();
                         if (Helpers.IsSafePosition(target.ServerPosition))
                         {
-                            DashToExtendedQ(); 
+                            DashToExtendedQ();
                         }
                     }
                 }
@@ -202,8 +202,8 @@ namespace LazyLucian
 
             if (target.HealthPercent <= ObjectManager.Player.HealthPercent &&
                 (ObjectManager.Player.HealthPercent > 30 ||
-                Helpers.GetComboDamage(target) >= target.Health) &&
-                target.Distance(ObjectManager.Player) <=975)
+                 Helpers.GetComboDamage(target) >= target.Health) &&
+                target.Distance(ObjectManager.Player) <= 975)
             {
                 for (var step = 0f; step < 360; step += stepSize)
                 {
@@ -220,19 +220,19 @@ namespace LazyLucian
             }
 
             else if (target.HealthPercent > ObjectManager.Player.HealthPercent &&
-                target.Distance(ObjectManager.Player) <= 400)
+                     target.Distance(ObjectManager.Player) <= 400)
             {
                 for (var step = 0f; step < 360; step += stepSize)
                 {
-                    var currentAngle = step * (float)Math.PI / 90;
+                    var currentAngle = step*(float) Math.PI/90;
                     var currentCheckPoint = target.ServerPosition.To2D() +
-                                            maxDistance * direction1.Rotated(currentAngle);
+                                            maxDistance*direction1.Rotated(currentAngle);
 
-                    if (!Helpers.IsSafePosition((Vector3)currentCheckPoint) ||
+                    if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
                         currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall))
                         continue;
                     {
-                        E.Cast((Vector3)currentCheckPoint);
+                        E.Cast((Vector3) currentCheckPoint);
                     }
                 }
             }
@@ -320,36 +320,24 @@ namespace LazyLucian
         */
 
 
-        public static void CastR()
+        public static void CastR(AIHeroClient unit)
         {
-            var unit = TargetSelector.SelectedTarget != null &&
-                       TargetSelector.SelectedTarget.Distance(ObjectManager.Player) <= 1500
-                ? TargetSelector.SelectedTarget
-                : TargetSelector.GetTarget(1500, DamageType.Physical);
-
-            if (!unit.IsValidTarget(R.Range)) return;
-
             var col = R.GetPrediction(unit);
-            var allies = EntityManager.Heroes.Allies.Count(
-                allied => !allied.IsDead && allied.Distance(unit) <= 500);
+            //var allies = EntityManager.Heroes.Allies.Count(
+            //  allied => !allied.IsDead && allied.Distance(unit) <= 500);
             var rDmg = ObjectManager.Player.GetSpellDamage(unit, SpellSlot.R)*Helpers.NumShots();
             var tDis = ObjectManager.Player.Distance(unit.ServerPosition);
 
-            if (allies != 0 || (!(unit.Distance(ObjectManager.Player.ServerPosition) > 500)) ||
-                col.HitChance == HitChance.Collision) return;
+            if (((unit.Distance(ObjectManager.Player.ServerPosition) < 400) &&
+                 ObjectManager.Player.HealthPercent > unit.HealthPercent) ||
+                col.HitChance == HitChance.Collision ||
+                !unit.IsValidTarget() ||
+                unit.HasBuffOfType(BuffType.Invulnerability)) return;
 
-            if (rDmg*0.8 > unit.Health && tDis < 800 && !Q.IsReady())
+            if (rDmg/1.4 > unit.Health && tDis < 1200)
+            {
                 R.Cast(unit);
-            else if (rDmg*0.7 > unit.Health && tDis < 900)
-                R.Cast(unit);
-            else if (rDmg*0.6 > unit.Health && tDis < 1000)
-                R.Cast(unit);
-            else if (rDmg*0.5 > unit.Health && tDis < 1100)
-                R.Cast(unit);
-            else if (rDmg*0.4 > unit.Health && tDis < 1200)
-                R.Cast(unit);
-            else if (rDmg*0.3 > unit.Health && tDis < 1300)
-                R.Cast(unit);
+            }
         }
 
         public static void LockR() //credits Brian(L$)
@@ -365,12 +353,16 @@ namespace LazyLucian
             var closestPoint = ObjectManager.Player.ServerPosition.To2D()
                 .Closest(new List<Vector2> {predPos, fullPoint});
 
-            if (closestPoint.IsValid() && !closestPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
+            if (closestPoint.IsValid() &&
+                !closestPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
+                !closestPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) &&
                 predPos.Distance(closestPoint) > E.Range)
             {
                 Orbwalker.MoveTo(closestPoint.To3D());
             }
-            else if (fullPoint.IsValid() && !fullPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
+            else if (fullPoint.IsValid() &&
+                     !fullPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
+                     !fullPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) &&
                      predPos.Distance(fullPoint) < R.Range &&
                      predPos.Distance(fullPoint) > 100)
             {

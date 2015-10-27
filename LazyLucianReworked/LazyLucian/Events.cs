@@ -15,22 +15,31 @@ namespace LazyLucian
         public static bool PassiveUp;
         public static float RLastCast = Game.Time;
 
-        public static void OnTick(EventArgs args)
+        public static void OnUpdate(EventArgs args)
         {
-            if (ObjectManager.Player.IsRecalling() || MenuGUI.IsChatOpen) return;
+            if (ObjectManager.Player.IsRecalling() ||
+                MenuGUI.IsChatOpen ||
+                ObjectManager.Player.IsDead) return;
 
             if (Init.MiscMenu["useKs"].Cast<CheckBox>().CurrentValue)
             {
                 Spells.Ks();
             }
-            if (Init.ComboMenu["useRkillable"].Cast<CheckBox>().CurrentValue)
+            if (Init.ComboMenu["useRkillable"].Cast<CheckBox>().CurrentValue &&
+                Game.Time - RLastCast > 5)
             {
-                
-                    if (Game.Time - RLastCast > 5)
+                if (Spells.R.IsReady() &&
+                    ObjectManager.Player.ManaPercent > Init.ComboMenu["rMana"].Cast<Slider>().CurrentValue)
+                {
+                    var target = TargetSelector.SelectedTarget != null &&
+                                 TargetSelector.SelectedTarget.Distance(ObjectManager.Player) < 1500
+                        ? TargetSelector.SelectedTarget
+                        : TargetSelector.GetTarget(1500, DamageType.Physical);
                     {
-                        Spells.CastR();
+                        if (target.IsValidTarget())
+                        Spells.CastR(target);
                     }
-                
+                }
             }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
@@ -61,15 +70,15 @@ namespace LazyLucian
             {
                 for (var step = 0f; step < 360; step += stepSize)
                 {
-                    var currentAngel = step * (float)Math.PI / 90;
+                    var currentAngel = step*(float) Math.PI/90;
                     var currentCheckPoint = playerPosition +
-                                            distance * direction1.Rotated(currentAngel);
+                                            distance*direction1.Rotated(currentAngel);
 
-                    if (!Helpers.IsSafePosition((Vector3)currentCheckPoint) ||
+                    if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
                         currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall))
                         continue;
                     {
-                        Spells.E.Cast((Vector3)currentCheckPoint);
+                        Spells.E.Cast((Vector3) currentCheckPoint);
                     }
                 }
             }
@@ -135,23 +144,23 @@ namespace LazyLucian
         {
             if (Init.DrawMenu["drawQ"].Cast<CheckBox>().CurrentValue)
             {
-                new Circle { Color = Color.Chartreuse, Radius = Spells.Q.Range }.Draw(ObjectManager.Player.Position);               
+                new Circle {Color = Color.Chartreuse, Radius = Spells.Q.Range}.Draw(ObjectManager.Player.Position);
             }
             if (Init.DrawMenu["drawQextended"].Cast<CheckBox>().CurrentValue)
             {
-                new Circle { Color = Color.Fuchsia, Radius = Spells.Q1.Range }.Draw(ObjectManager.Player.Position);
+                new Circle {Color = Color.Fuchsia, Radius = Spells.Q1.Range}.Draw(ObjectManager.Player.Position);
             }
             if (Init.DrawMenu["drawW"].Cast<CheckBox>().CurrentValue)
             {
-                new Circle { Color = Color.Black, Radius = Spells.W.Range }.Draw(ObjectManager.Player.Position);
+                new Circle {Color = Color.Black, Radius = Spells.W.Range}.Draw(ObjectManager.Player.Position);
             }
             if (Init.DrawMenu["drawE"].Cast<CheckBox>().CurrentValue)
             {
-                new Circle { Color = Color.Firebrick, Radius = Spells.E.Range }.Draw(ObjectManager.Player.Position);
+                new Circle {Color = Color.Firebrick, Radius = Spells.E.Range}.Draw(ObjectManager.Player.Position);
             }
             if (Init.DrawMenu["drawR"].Cast<CheckBox>().CurrentValue)
             {
-                new Circle { Color = Color.DarkBlue, Radius = Spells.R.Range }.Draw(ObjectManager.Player.Position);
+                new Circle {Color = Color.DarkBlue, Radius = Spells.R.Range}.Draw(ObjectManager.Player.Position);
             }
         }
     }

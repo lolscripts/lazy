@@ -176,7 +176,7 @@ namespace LazyLucian
             *                                   
             */
 
-            Game.OnTick += Events.OnTick;
+            Game.OnUpdate += Events.OnUpdate;
             Gapcloser.OnGapcloser += Events.OnGapCloser;
             Obj_AI_Base.OnProcessSpellCast += Events.OnProcessSpellCast;
             Obj_AI_Base.OnSpellCast += Events.OnCastSpell;

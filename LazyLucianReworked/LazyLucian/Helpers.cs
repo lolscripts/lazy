@@ -167,13 +167,13 @@ namespace LazyLucian
             switch (Spells.R.Level)
             {
                 case 1:
-                    num += 7.5*ObjectManager.Player.AttackSpeedMod*0.5;
+                    num += 7.5*ObjectManager.Player.AttackSpeedMod*0.6;
                     break;
                 case 2:
-                    num += 9*ObjectManager.Player.AttackSpeedMod*0.5;
+                    num += 9*ObjectManager.Player.AttackSpeedMod*0.6;
                     break;
                 case 3:
-                    num += 10.5*ObjectManager.Player.AttackSpeedMod*0.5;
+                    num += 10.5*ObjectManager.Player.AttackSpeedMod*0.6;
                     break;
             }
             return num;

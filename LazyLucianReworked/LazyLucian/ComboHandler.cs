@@ -17,7 +17,8 @@ namespace LazyLucian
             if (target == null ||
                 (Init.ComboMenu["spellWeaving"].Cast<CheckBox>().CurrentValue && Events.PassiveUp) ||
                 Orbwalker.IsAutoAttacking ||
-                ObjectManager.Player.IsDashing())
+                ObjectManager.Player.IsDashing() ||
+                target.HasBuffOfType(BuffType.Invulnerability))
                 return;
 
 
@@ -47,14 +48,14 @@ namespace LazyLucian
                 }
             }
 
-            if (!Spells.E.IsReady() ||
-                ObjectManager.Player.ManaPercent < Init.ComboMenu["eMana"].Cast<Slider>().CurrentValue) return;
+            if (Spells.E.IsReady() &&
+                ObjectManager.Player.ManaPercent > Init.ComboMenu["eMana"].Cast<Slider>().CurrentValue)
             {
                 if (Init.ComboMenu["useEcombo"].Cast<CheckBox>().CurrentValue)
                 {
                     Spells.CastEcombo();
                 }
-            }
+            }          
         }
     }
 }
