@@ -49,7 +49,7 @@ namespace LazyLucian
                 var minions =
                     EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy,
                         ObjectManager.Player.Position, 500)
-                        .FirstOrDefault(x => x.IsValidTarget(Spells.W.Range));
+                        .FirstOrDefault(x => x.IsValidTarget(500));
                 if (minions != null)
                     Spells.W.Cast(minions);
             }
@@ -81,9 +81,8 @@ namespace LazyLucian
                 ObjectManager.Player.ManaPercent < Init.FarmMenu["wManaJungle"].Cast<Slider>().CurrentValue) return;
             {
                 var monsters =
-                    EntityManager.MinionsAndMonsters.GetJungleMonsters(ObjectManager.Player.ServerPosition,
-                        Spells.Q.Range)
-                        .FirstOrDefault(x => x.IsValidTarget(Spells.Q.Range));
+                    EntityManager.MinionsAndMonsters.GetJungleMonsters(ObjectManager.Player.ServerPosition,500)
+                        .FirstOrDefault(x => x.IsValidTarget(500));
                 if (monsters != null)
                     Spells.W.Cast(monsters);
             }

@@ -202,7 +202,7 @@ namespace LazyLucian
             {
                 return true;
             }
-            return allies + 1 > enemies - lhEnemies;
+            return allies > enemies - lhEnemies;
         }
 
         public class CircInter

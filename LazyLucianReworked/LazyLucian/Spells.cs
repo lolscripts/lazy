@@ -207,7 +207,7 @@ namespace LazyLucian
             {
                 for (var step = 0f; step < 360; step += stepSize)
                 {
-                    var currentAngle = step*(float) Math.PI/180;
+                    var currentAngle = step*(float) Math.PI/360;
                     var currentCheckPoint = target.ServerPosition.To2D() +
                                             maxDistance*direction2.Rotated(currentAngle);
 
@@ -224,7 +224,7 @@ namespace LazyLucian
             {
                 for (var step = 0f; step < 360; step += stepSize)
                 {
-                    var currentAngle = step*(float) Math.PI/120;
+                    var currentAngle = step*(float) Math.PI/180;
                     var currentCheckPoint = target.ServerPosition.To2D() +
                                             maxDistance*direction1.Rotated(currentAngle);
 
