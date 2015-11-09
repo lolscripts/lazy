@@ -347,13 +347,19 @@ namespace LazyLucian
                 return;
 
             if (!(rDmg/1.4 > unit.Health) || !(tDis < 1200) &&
+                Events.LastRcast > Game.Time + 5 &&
                 Events.LastRcast > Game.Time + 5000) return;
             {
                 R.Cast(unit);
             }
-            if (unit.Distance(ObjectManager.Player.ServerPosition) < 500 &&
-                unit.Health <= (ObjectManager.Player.GetSpellDamage(unit, SpellSlot.Q) - 20) &&
-                Q.IsReady())
+        }
+
+        public static void CancelR()
+        {
+            var unit = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
+
+            if (unit.Health < ObjectManager.Player.GetSpellDamage(unit, SpellSlot.Q) &&
+                Events.LastRcast < Game.Time +5)
             {
                 R.Cast(unit);
             }

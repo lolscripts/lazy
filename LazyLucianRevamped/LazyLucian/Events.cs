@@ -24,6 +24,7 @@ namespace LazyLucian
 
             Helpers.BushWard();
 
+
             if (Init.MiscMenu["useKs"].Cast<CheckBox>().CurrentValue)
             {
                 Spells.Ks();
