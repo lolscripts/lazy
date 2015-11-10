@@ -8,3 +8,4 @@ C:\Users\NOOB\Documents\Visual Studio 2015\Projects\LazyLucianRevamped\LazyLucia
 C:\Users\NOOB\Documents\Visual Studio 2015\Projects\LazyLucianRevamped\LazyLucian\bin\Debug\Newtonsoft.Json.dll
 C:\Users\NOOB\Documents\Visual Studio 2015\Projects\LazyLucianRevamped\LazyLucian\obj\Debug\LazyLucian.exe
 C:\Users\NOOB\Documents\Visual Studio 2015\Projects\LazyLucianRevamped\LazyLucian\obj\Debug\LazyLucian.pdb
+C:\Users\NOOB\Documents\Visual Studio 2015\Projects\LazyLucianRevamped\LazyLucian\obj\Debug\LazyLucian.csprojResolveAssemblyReference.cache
