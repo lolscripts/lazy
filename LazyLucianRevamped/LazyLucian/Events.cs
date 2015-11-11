@@ -23,7 +23,7 @@ namespace LazyLucian
                 return;
 
             Helpers.BushWard();
-
+            Spells.CancelR();
 
             if (Init.MiscMenu["useKs"].Cast<CheckBox>().CurrentValue)
             {

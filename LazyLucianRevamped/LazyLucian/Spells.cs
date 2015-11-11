@@ -347,7 +347,6 @@ namespace LazyLucian
                 return;
 
             if (!(rDmg/1.4 > unit.Health) || !(tDis < 1200) &&
-                Events.LastRcast > Game.Time + 5 &&
                 Events.LastRcast > Game.Time + 5000) return;
             {
                 R.Cast(unit);
@@ -359,7 +358,8 @@ namespace LazyLucian
             var unit = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
 
             if (unit.Health < ObjectManager.Player.GetSpellDamage(unit, SpellSlot.Q) &&
-                Events.LastRcast < Game.Time +5)
+                unit.IsValidTarget(500) &&
+                Events.LastRcast < Game.Time +5000)
             {
                 R.Cast(unit);
             }
