@@ -353,17 +353,6 @@ namespace LazyLucian
             }
         }
 
-        public static void CancelR()
-        {
-            var unit = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-
-            if (unit.Health < ObjectManager.Player.GetSpellDamage(unit, SpellSlot.Q) &&
-                unit.IsValidTarget(500) &&
-                Events.LastRcast < Game.Time +5000)
-            {
-                R.Cast(unit);
-            }
-        }
 
         public static void LockR() //credits Brian(L$)
         {
