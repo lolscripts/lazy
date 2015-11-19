@@ -1,0 +1,3 @@
+C:\Users\NOOB\Desktop\Repos\VayneBuddy\VayneBuddy\obj\Debug\VayneBuddy.csprojResolveAssemblyReference.cache
+C:\Users\NOOB\Desktop\Repos\VayneBuddy\VayneBuddy\obj\Debug\VayneBuddy.exe
+C:\Users\NOOB\Desktop\Repos\VayneBuddy\VayneBuddy\obj\Debug\VayneBuddy.pdb
