@@ -210,8 +210,8 @@ namespace LazyLucian
                                             maxDistance*direction2.Rotated(currentAngle);
 
                     if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
-                        currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) ||
-                        currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building))
+                        NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
+                        NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Building))
                         continue;
                     {
                         E.Cast((Vector3) currentCheckPoint);
@@ -229,8 +229,8 @@ namespace LazyLucian
                                             maxDistance*direction1.Rotated(currentAngle);
 
                     if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
-                        currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) ||
-                        currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building))
+                        NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
+                        NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Building))
                         continue;
                     {
                         E.Cast((Vector3) currentCheckPoint);
@@ -293,20 +293,20 @@ namespace LazyLucian
                             return;
                         }
 
-                        if (!bestChamp.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
-                            !bestChamp.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) &&
+                        if (!NavMesh.GetCollisionFlags(bestChamp).HasFlag(CollisionFlags.Wall) &&
+                            !NavMesh.GetCollisionFlags(bestChamp).HasFlag(CollisionFlags.Building) &&
                             Helpers.IsSafePosition((Vector3) bestChamp))
                         {
                             E.Cast((Vector3) bestChamp);
                         }
-                        if (!bestMinion.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
-                            !bestMinion.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) &&
+                        if (!NavMesh.GetCollisionFlags(bestMinion).HasFlag(CollisionFlags.Wall) &&
+                            !NavMesh.GetCollisionFlags(bestMinion).HasFlag(CollisionFlags.Building) &&
                             Helpers.IsSafePosition((Vector3) bestMinion))
                         {
                             E.Cast((Vector3) bestMinion);
                         }
-                        else if (!bestMonster.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
-                                 !bestMonster.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) &&
+                        else if (!NavMesh.GetCollisionFlags(bestMonster).HasFlag(CollisionFlags.Wall) &&
+                                 !NavMesh.GetCollisionFlags(bestMonster).HasFlag(CollisionFlags.Building) &&
                                  Helpers.IsSafePosition((Vector3) bestMonster))
                         {
                             E.Cast((Vector3) bestMonster);
@@ -346,8 +346,8 @@ namespace LazyLucian
                 allies > 1)
                 return;
 
-            if (!(rDmg/1.4 > unit.Health) || !(tDis < 1200) &&
-                Events.LastRcast > Game.Time + 5000) return;
+            if ((rDmg/1.4 < unit.Health) || (tDis > 1500) ||
+                Events.LastRcast < Game.Time + 5) return;
             {
                 R.Cast(unit);
             }
@@ -368,15 +368,15 @@ namespace LazyLucian
                 .Closest(new List<Vector2> {predPos, fullPoint});
 
             if (closestPoint.IsValid() &&
-                !closestPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
-                !closestPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) &&
+                !NavMesh.GetCollisionFlags(closestPoint).HasFlag(CollisionFlags.Wall) &&
+                !NavMesh.GetCollisionFlags(closestPoint).HasFlag(CollisionFlags.Building) &&
                 predPos.Distance(closestPoint) > E.Range)
             {
                 Orbwalker.MoveTo(closestPoint.To3D());
             }
             else if (fullPoint.IsValid() &&
-                     !fullPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) &&
-                     !fullPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building) &&
+                     !NavMesh.GetCollisionFlags(fullPoint).HasFlag(CollisionFlags.Wall) &&
+                     !NavMesh.GetCollisionFlags(fullPoint).HasFlag(CollisionFlags.Building) &&
                      predPos.Distance(fullPoint) < R.Range &&
                      predPos.Distance(fullPoint) > 100)
             {

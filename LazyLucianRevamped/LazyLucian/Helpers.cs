@@ -307,7 +307,7 @@ namespace LazyLucian
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsValidTarget(450)))
             {
                 var predPos = Prediction.Position.PredictUnitPosition(enemy, 80);
-                var isInGrass = predPos.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Grass);
+                var isInGrass = NavMesh.GetCollisionFlags(predPos).HasFlag(CollisionFlags.Grass);
                 if (isInGrass)
                 {
                     _wardTime = Game.Time;

@@ -75,8 +75,8 @@ namespace LazyLucian
                                             distance * direction1.Rotated(currentAngel);
 
                     if (!Helpers.IsSafePosition((Vector3)currentCheckPoint) ||
-                        currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Wall) ||
-                        currentCheckPoint.ToNavMeshCell().CollFlags.HasFlag(CollisionFlags.Building))
+                        NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
+                        NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Building))
                         continue;
                     {
                         Spells.E.Cast((Vector3)currentCheckPoint);
