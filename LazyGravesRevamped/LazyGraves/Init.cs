@@ -1,0 +1,186 @@
+﻿using System;
+using EloBuddy;
+using EloBuddy.SDK;
+using EloBuddy.SDK.Events;
+using EloBuddy.SDK.Menu;
+using EloBuddy.SDK.Menu.Values;
+
+namespace LazyGraves
+{
+    internal class Init
+    {
+        public static Menu Menu, ComboMenu, HarassMenu, FarmMenu, MiscMenu, DrawMenu;
+
+        public static void LoadMenu()
+        {
+            Bootstrap.Init(null);
+
+            Menu = MainMenu.AddMenu("Lazy Graves", "LazyGraves");
+            Menu.AddGroupLabel("Lazy Graves");
+            Menu.AddLabel("by DamnedNooB");
+            Menu.AddSeparator();
+
+            //-------------------------------------------------------------------------------------------------------------------
+            /*
+            *       _____                _             __  __                  
+            *      / ____|              | |           |  \/  |                 
+            *     | |     ___  _ __ ___ | |__   ___   | \  / | ___ _ __  _   _ 
+            *     | |    / _ \| '_ ` _ \| '_ \ / _ \  | |\/| |/ _ \ '_ \| | | |
+            *     | |___| (_) | | | | | | |_) | (_) | | |  | |  __/ | | | |_| |
+            *      \_____\___/|_| |_| |_|_.__/ \___/  |_|  |_|\___|_| |_|\__,_|
+            *                                                                  
+            *                                                                  
+            */
+
+            ComboMenu = Menu.AddSubMenu("Combo", "Combo");
+            ComboMenu.AddGroupLabel("Combo Settings");
+            ComboMenu.AddLabel("Soon(TM) Kappa");
+            /*ComboMenu.AddLabel("Q - BuckShot");
+            ComboMenu.Add("useQ", new CheckBox("Use Simple Q in Combo"));
+            ComboMenu.Add("useWallQ", new CheckBox("Use Collision (building/wall) - Q in Combo"));
+            ComboMenu.AddSeparator();
+
+            ComboMenu.AddLabel("W - Black Hole");
+            //ComboMenu.Add("useWslow", new CheckBox("Use W to slow down fleeing enemys"));
+            ComboMenu.Add("useWgrass", new CheckBox("Use if enemy goes into grass"));
+            ComboMenu.Add("useWkill", new CheckBox("Use to kill (AP Graves OP)"));
+            ComboMenu.AddSeparator();
+
+            ComboMenu.AddLabel("E - True Grit");
+            ComboMenu.Add("useE", new CheckBox("Use Logic"));
+            ComboMenu.Add("useEreload", new CheckBox("Use to reload"));
+            ComboMenu.Add("useEQ", new CheckBox("Use E-Q to get in Position for Collision - Q"));
+            ComboMenu.AddSeparator();
+
+            ComboMenu.AddLabel("Boom");
+            //ComboMenu.Add("useRfast", new CheckBox("Use Fast Q-R Combo"));
+            ComboMenu.Add("useRkill", new CheckBox("Use to kill"));
+            ComboMenu.AddSeparator();
+
+            ComboMenu.AddLabel("Misc");
+            ComboMenu.Add("disableAa", new CheckBox("Disable AA if Collision"));
+
+            //-------------------------------------------------------------------------------------------------------------------
+            /*
+            *      _    _                           __  __                  
+            *     | |  | |                         |  \/  |                 
+            *     | |__| | __ _ _ __ __ _ ___ ___  | \  / | ___ _ __  _   _ 
+            *     |  __  |/ _` | '__/ _` / __/ __| | |\/| |/ _ \ '_ \| | | |
+            *     | |  | | (_| | | | (_| \__ \__ \ | |  | |  __/ | | | |_| |
+            *     |_|  |_|\__,_|_|  \__,_|___/___/ |_|  |_|\___|_| |_|\__,_|
+            *                                                               
+            *                                                               
+            */
+            /*
+                        HarassMenu = Menu.AddSubMenu("Harass", "Harass");
+                        HarassMenu.AddGroupLabel("Harass Settings");
+                        HarassMenu.AddLabel("Q - Piercing Light");
+                        HarassMenu.Add("useQharass", new CheckBox("Use in Harass"));
+                        HarassMenu.Add("useQextended", new CheckBox("Use extended Q in Harass"));
+                        HarassMenu.Add("qMana", new Slider("Min Mana to use: ", 20, 1));
+                        HarassMenu.AddSeparator();
+
+                        HarassMenu.AddLabel("W - Ardent Blaze");
+                        HarassMenu.Add("useWaaRange", new CheckBox("Use in AA - Range"));
+                        HarassMenu.Add("useWalways", new CheckBox("Use out of AA - Range"));
+                        HarassMenu.Add("wMana", new Slider("Min Mana to use: ", 20, 1));
+                        HarassMenu.AddSeparator();
+
+                        HarassMenu.AddLabel("Misc Settings (Harass)");
+                        HarassMenu.Add("spellWeaving", new CheckBox("Use Passive (Spellweaving)"));
+            */
+            //-------------------------------------------------------------------------------------------------------------------
+            /*
+            *      ______                     __  __                  
+            *     |  ____|                   |  \/  |                 
+            *     | |__ __ _ _ __ _ __ ___   | \  / | ___ _ __  _   _ 
+            *     |  __/ _` | '__| '_ ` _ \  | |\/| |/ _ \ '_ \| | | |
+            *     | | | (_| | |  | | | | | | | |  | |  __/ | | | |_| |
+            *     |_|  \__,_|_|  |_| |_| |_| |_|  |_|\___|_| |_|\__,_|
+            *                                                         
+            *                                                         
+            */
+            /*
+                        FarmMenu = Menu.AddSubMenu("Farm", "Farm");
+                        FarmMenu.AddGroupLabel("Farm Settings");
+                        FarmMenu.AddLabel("Q - Piercing Light");
+                        FarmMenu.Add("useQfarm", new CheckBox("Use in LaneClear"));
+                        FarmMenu.Add("qManaLane", new Slider("Min Mana to use in LaneClear: ", 20, 1));
+                        FarmMenu.Add("qMinionsLane", new Slider("Min Minions to use in LaneClear: ", 3, 1, 5));
+                        FarmMenu.AddSeparator();
+                        FarmMenu.Add("useQjungle", new CheckBox("Use in JungleClear"));
+                        FarmMenu.Add("qManaJungle", new Slider("Min Mana to use in JungleClear: ", 20, 1));
+                        FarmMenu.AddSeparator();
+
+                        FarmMenu.AddLabel("W - Ardent Blaze");
+                        FarmMenu.Add("useWfarm", new CheckBox("Use in LaneClear"));
+                        FarmMenu.Add("wManaLane", new Slider("Min Mana to use in LaneClear: ", 20, 1));
+                        FarmMenu.AddSeparator();
+                        FarmMenu.Add("useWjungle", new CheckBox("Use in JungleClear"));
+                        FarmMenu.Add("wManaJungle", new Slider("Min Mana to use in JungleClear: ", 20, 1));
+                        FarmMenu.AddSeparator();
+
+                        FarmMenu.AddLabel("Misc Settings (Farm)");
+                        FarmMenu.Add("spellWeaving", new CheckBox("Use Passive (Spellweaving)"));
+            */
+            //-------------------------------------------------------------------------------------------------------------------
+            /*
+            *      __  __ _            __  __                  
+            *     |  \/  (_)          |  \/  |                 
+            *     | \  / |_ ___  ___  | \  / | ___ _ __  _   _ 
+            *     | |\/| | / __|/ __| | |\/| |/ _ \ '_ \| | | |
+            *     | |  | | \__ \ (__  | |  | |  __/ | | | |_| |
+            *     |_|  |_|_|___/\___| |_|  |_|\___|_| |_|\__,_|
+            *                                                  
+            *                                                  
+            */
+            /*
+                        MiscMenu = Menu.AddSubMenu("Misc", "Misc");
+                        MiscMenu.AddGroupLabel("Miscellaneous Settings");
+                        MiscMenu.AddLabel("Anti Gapcloser Settings");
+                        MiscMenu.Add("gapcloser", new CheckBox("Use E - Relentless Pursuit to avoid non targeted"));
+                        MiscMenu.AddSeparator();
+                        MiscMenu.AddGroupLabel("Other Settings");
+                        MiscMenu.Add("useKs", new CheckBox("Use KillSecure - Logic"));
+            */
+            //-------------------------------------------------------------------------------------------------------------------
+            /*
+            *      _____                       __  __                  
+            *     |  __ \                     |  \/  |                 
+            *     | |  | |_ __ __ ___      __ | \  / | ___ _ __  _   _ 
+            *     | |  | | '__/ _` \ \ /\ / / | |\/| |/ _ \ '_ \| | | |
+            *     | |__| | | | (_| |\ V  V /  | |  | |  __/ | | | |_| |
+            *     |_____/|_|  \__,_| \_/\_/   |_|  |_|\___|_| |_|\__,_|
+            *                                                          
+            *                                                          
+            */
+            /*
+                        DrawMenu = Menu.AddSubMenu("Draw", "Draw");
+                        DrawMenu.AddGroupLabel("Draw Settings");
+                        DrawMenu.AddLabel("Spell Ranges");
+                        DrawMenu.Add("drawQ", new CheckBox("Draw Q Range"));
+                        DrawMenu.Add("drawQextended", new CheckBox("Draw Extended Q Range"));
+                        DrawMenu.Add("drawW", new CheckBox("Draw W Range"));
+                        DrawMenu.Add("drawE", new CheckBox("Draw E Range"));
+                        DrawMenu.Add("drawR", new CheckBox("Draw R Range"));
+            */
+            //-------------------------------------------------------------------------------------------------------------------
+            /*
+            *      ______               _       
+            *     |  ____|             | |      
+            *     | |____   _____ _ __ | |_ ___ 
+            *     |  __\ \ / / _ \ '_ \| __/ __|
+            *     | |___\ V /  __/ | | | |_\__ \
+            *     |______\_/ \___|_| |_|\__|___/
+            *                                   
+            *                                   
+            */
+
+            Game.OnUpdate += Events.OnUpdate;
+            Orbwalker.OnPostAttack += Events.OnPostAttack;
+            Orbwalker.OnPreAttack += Events.OnPreAttack;
+            Obj_AI_Base.OnSpellCast += Events.OnSpellCast;
+            Gapcloser.OnGapcloser += Events.OnGapCloser;
+        }
+    }
+}
