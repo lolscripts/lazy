@@ -119,7 +119,7 @@ namespace LazyGraves
             var turrets = EntityManager.Turrets.Allies.Count(x => Player.Distance(x) < 800 && x.IsValid && !x.IsDead);
             var lowEnemies = GetLowaiAiHeroClients(position, 800).Count();
 
-            if (UnderEnemyTurret(position) || InSpawnPoint(position)) return false;
+            if (UnderEnemyTurret(position)) return false;
 
             if (enemies == 1)
             {

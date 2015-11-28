@@ -41,7 +41,7 @@ namespace LazyGraves
                 FarmHandler.JungleClear();
             }
 
-            else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
 
                 FarmHandler.LaneClear();
         }
@@ -102,7 +102,7 @@ namespace LazyGraves
 
             if (Init.MiscMenu["gapcloserE"].Cast<CheckBox>().CurrentValue)
             {
-                var direction = (e.End - Player.ServerPosition).To2D().Normalized();
+                var direction = (e.End + Player.ServerPosition).To2D().Normalized();
 
                 for (var step = 0f; step < 360; step += 30)
                 {

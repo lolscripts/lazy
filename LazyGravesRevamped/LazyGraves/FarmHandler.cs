@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
@@ -13,8 +12,6 @@ namespace LazyGraves
 
         public static void LaneClear()
         {
-            if (!Init.FarmMenu["useQlane"].Cast<CheckBox>().CurrentValue ||
-                Player.ManaPercent < Init.FarmMenu["qManaLane"].Cast<Slider>().CurrentValue) return;
             var minions =
                 EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy,
                     ObjectManager.Player.Position, Spells.Q.Range);
@@ -22,12 +19,12 @@ namespace LazyGraves
 
             foreach (var m in from m in aiMinions
                 let p = new Geometry.Polygon.Rectangle((Vector2) ObjectManager.Player.ServerPosition,
-                    ObjectManager.Player.ServerPosition.Extend(m.ServerPosition, Spells.Q.Range), Spells.Q.Width)
+                    ObjectManager.Player.ServerPosition.Extend(m.ServerPosition, Spells.Q.Range), 65)
                 where aiMinions.Count(x =>
                     p.IsInside(x.ServerPosition)) >= Init.FarmMenu["qMinionsLane"].Cast<Slider>().CurrentValue
                 select m)
             {
-                Spells.Q.Cast(m);
+                Spells.Q.Cast((Vector3) Player.Position.Extend(m, Spells.Q.Range));
                 break;
             }
         }
@@ -37,7 +34,7 @@ namespace LazyGraves
             if (!Spells.Q.IsReady() || !Init.FarmMenu["useQjungle"].Cast<CheckBox>().CurrentValue) return;
             var monster = EntityManager.MinionsAndMonsters.GetJungleMonsters(ObjectManager.Player.ServerPosition,
                 Spells.Q.Range)
-                .First(x => x.IsValidTarget(Spells.Q.Range));
+                .FirstOrDefault(x => x.IsValidTarget(Spells.Q.Range));
             if (monster != null)
                 Spells.Q.Cast(monster);
         }
