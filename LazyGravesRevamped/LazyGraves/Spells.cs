@@ -96,70 +96,66 @@ namespace LazyGraves
                 null, true);
 
             if (predPos.HitChance >= HitChance.Medium &&
-                target.HealthPercent < 20 && !target.IsFacing(Player))
+                target.HealthPercent < 20)
             {
                 Q.Cast(predPos.CastPosition);
             }
         }
 
-        public static void CastEself()
+        public static void CastE()
         {
-            var target = TargetSelector.SelectedTarget != null &&
-                         TargetSelector.SelectedTarget.Distance(Player) < 2000
-                ? TargetSelector.SelectedTarget
-                : TargetSelector.GetTarget(R.Range, DamageType.Physical);
-
-            if (!target.IsValidTarget() || !E.IsReady() ||
-                Player.IsDashing() || target.HasBuffOfType(BuffType.Invulnerability)
-                || target.IsDead || target.IsZombie)
-                return;
-
-            var direction = (target.ServerPosition + Player.ServerPosition).To2D().Normalized();
-
-            if (!Player.IsInAutoAttackRange(target) || !(target.HealthPercent > Player.HealthPercent)) return;
-
-            for (var step = 0f; step < 360; step += 30)
+            foreach (
+                var unit in
+                    EntityManager.Heroes.Enemies.Where(x => x.IsInAutoAttackRange(Player) && x.IsAttackingPlayer)
+                        .Where(
+                            unit =>
+                                Player.HealthPercent < unit.HealthPercent && Helpers.GetComboDamage(unit) < unit.Health)
+                )
             {
-                for (var a = 100; a < 450; a += 50)
+                for (var step = 0f; step < 90; step += 15)
                 {
-                    var currentAngle = step*(float) Math.PI/120;
-                    var currentCheckPoint = target.ServerPosition.To2D() +
-                                            a*direction.Rotated(currentAngle);
-
-                    if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
-                        NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
-                        NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Building))
-                        continue;
+                    for (var a = 450; a != 0; a -= 50)
                     {
-                        E.Cast((Vector3) currentCheckPoint);
+                        var currentAngle = step*(float) Math.PI/360;
+                        var extended = unit.ServerPosition.Extend(Player, a);
+                        var currentCheckPoint = unit.ServerPosition.To2D() +
+                                                extended.Rotated(currentAngle);
+
+                        if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
+                            NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
+                            NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Building))
+                            continue;
+                        {
+                            E.Cast((Vector3) currentCheckPoint);
+                        }
                     }
                 }
             }
-        }
 
-        public static void CastEenemy()
-        {
-            var target = TargetSelector.SelectedTarget != null &&
-                         TargetSelector.SelectedTarget.Distance(Player) < 2000
-                ? TargetSelector.SelectedTarget
-                : TargetSelector.GetTarget(R.Range, DamageType.Physical);
+            foreach (
+                var unit in
+                    EntityManager.Heroes.Enemies.Where(
+                        x =>
+                            !Player.IsInAutoAttackRange(Player) &&
+                            x.IsValidTarget(E.Range + Player.GetAutoAttackRange()))
+                        .Where(
+                            unit =>
+                                Player.HealthPercent > unit.HealthPercent && Helpers.GetComboDamage(unit) < unit.Health &&
+                                Player.Distance(unit) > Player.GetAutoAttackRange()))
             {
-                if (!target.IsValidTarget() || !E.IsReady() ||
-                    Player.IsDashing() || target.HasBuffOfType(BuffType.Invulnerability)
-                    || target.IsDead || target.IsZombie)
+                if (!unit.IsValidTarget() || !E.IsReady() || !Q.IsReady() ||
+                    Player.IsDashing() || unit.HasBuffOfType(BuffType.Invulnerability)
+                    || unit.IsDead || unit.IsZombie)
                     return;
 
-                var direction = (Player.ServerPosition + target.ServerPosition).To2D().Normalized();
-
-                if (Helpers.GetComboDamage(target) < target.Health) return;
-
-                for (var step = 0f; step < 360; step += 30)
+                for (var step = 0f; step < 90; step += 15)
                 {
-                    for (var a = 300; a < 450; a += 50)
+                    for (var a = 450; a != 0; a -= 50)
                     {
-                        var currentAngle = step*(float) Math.PI/120;
-                        var currentCheckPoint = target.ServerPosition.To2D() +
-                                                a*direction.Rotated(currentAngle);
+                        var currentAngle = step*(float) Math.PI/360;
+                        var extended = Player.ServerPosition.Extend(unit, a);
+                        var currentCheckPoint = unit.ServerPosition.To2D() +
+                                                extended.Rotated(currentAngle);
 
                         if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
                             NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
@@ -173,6 +169,7 @@ namespace LazyGraves
             }
         }
 
+        /*
         public static void CastEq()
         {
             var target = TargetSelector.SelectedTarget != null &&
@@ -191,6 +188,7 @@ namespace LazyGraves
 
             E.Cast(Helpers.DashtoQpos(target));
         }
+        */
 
         public static void CastRkill(AIHeroClient target)
         {

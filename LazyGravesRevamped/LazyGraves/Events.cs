@@ -36,14 +36,13 @@ namespace LazyGraves
                 HarassHandler.Harass();
             }
 
-            else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) ||
+                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
                 FarmHandler.JungleClear();
-            }
-
-            else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
-
                 FarmHandler.LaneClear();
+            }
+            
         }
 
         public static void OnSpellCast(GameObject sender, GameObjectProcessSpellCastEventArgs args)
@@ -85,15 +84,30 @@ namespace LazyGraves
                  Init.ComboMenu["useEreload"].Cast<CheckBox>().CurrentValue) ||
                 (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
                  target.Type == GameObjectType.obj_AI_Minion &&
-                 Init.ComboMenu["useEreload"].Cast<CheckBox>().CurrentValue &&
+                 Init.FarmMenu["useEreload"].Cast<CheckBox>().CurrentValue &&
                  Player.ManaPercent > Init.FarmMenu["eManaLane"].Cast<Slider>().CurrentValue) ||
                 (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) &&
                  target.Type == GameObjectType.NeutralMinionCamp &&
-                 Init.ComboMenu["useEreload"].Cast<CheckBox>().CurrentValue) &&
-                Helpers.IsSafePosition((Vector3) Player.ServerPosition.Extend(Game.CursorPos, Spells.E.Range)))
-            {
-                Spells.E.Cast((Vector3) Player.ServerPosition.Extend(Game.CursorPos, Spells.E.Range));
-            }
+                 Init.FarmMenu["useEreload"].Cast<CheckBox>().CurrentValue))
+
+                for (var step = 0f; step < 90; step += 15)
+                {
+                    for (var a = 450; a != 0; a -= 50)
+                    {
+                        var currentAngle = step * (float)Math.PI / 360;
+                        var extended = Player.ServerPosition.Extend(Game.CursorPos, a);
+                        var currentCheckPoint = Game.CursorPos.To2D() +
+                                                extended.Rotated(currentAngle);
+
+                        if (!Helpers.IsSafePosition((Vector3)currentCheckPoint) ||
+                            NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
+                            NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Building))
+                            continue;
+                        {
+                            Spells.E.Cast((Vector3)currentCheckPoint);
+                        }
+                    }
+                }
         }
 
         public static void OnGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
