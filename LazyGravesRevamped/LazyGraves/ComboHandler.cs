@@ -35,8 +35,8 @@ namespace LazyGraves
                 if (Init.ComboMenu["useQ"].Cast<CheckBox>().CurrentValue)
                     Spells.CastQkill(target);
 
-                if (Spells.E.IsReady() && Init.ComboMenu["useE"].Cast<CheckBox>().CurrentValue)
-                    Spells.CastEq();
+                //if (Spells.E.IsReady() && Init.ComboMenu["useE"].Cast<CheckBox>().CurrentValue)
+                  //  Spells.CastEq();
             }
 
             else if (tHp < Player.GetSpellDamage(target, SpellSlot.R) &&
@@ -68,8 +68,7 @@ namespace LazyGraves
 
             if (Init.ComboMenu["useE"].Cast<CheckBox>().CurrentValue)
                 if (Spells.E.IsReady())
-                    Spells.CastEenemy();
-            Spells.CastEself();
+                    Spells.CastE();
         }
 
         public static void Ks()
@@ -98,8 +97,8 @@ namespace LazyGraves
                 if (Init.ComboMenu["useQ"].Cast<CheckBox>().CurrentValue)
                     Spells.CastQkill(target);
 
-                if (Spells.E.IsReady() && Init.ComboMenu["useE"].Cast<CheckBox>().CurrentValue)
-                    Spells.CastEq();
+                //if (Spells.E.IsReady() && Init.ComboMenu["useE"].Cast<CheckBox>().CurrentValue)
+                  //  Spells.CastEq();
             }
 
             else if (tHp < Player.GetSpellDamage(target, SpellSlot.R) &&
