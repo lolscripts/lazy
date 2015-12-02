@@ -99,8 +99,8 @@ namespace LazyLucian
 
         public static void OnAfterAttack(AttackableUnit target, EventArgs args)
         {
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
-                {
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            {
                 FarmHandler.LaneClear();
                 FarmHandler.JungleClear();
             }
