@@ -92,8 +92,7 @@ namespace LazyGraves
                     var currentCheckPoint = Player.ServerPosition.To2D() +
                                             a*direction.Rotated(currentAngle);
 
-                    if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
-                        NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
+                    if (NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
                         NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Building))
                         continue;
                     {

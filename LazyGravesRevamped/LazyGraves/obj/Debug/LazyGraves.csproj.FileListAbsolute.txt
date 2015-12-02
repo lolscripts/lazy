@@ -8,3 +8,4 @@ C:\Users\NOOB\Documents\Visual Studio 2015\Projects\LazyGravesRevamped\LazyGrave
 C:\Users\NOOB\Documents\Visual Studio 2015\Projects\LazyGravesRevamped\LazyGraves\bin\Debug\Newtonsoft.Json.dll
 C:\Users\NOOB\Documents\Visual Studio 2015\Projects\LazyGravesRevamped\LazyGraves\obj\Debug\LazyGraves.exe
 C:\Users\NOOB\Documents\Visual Studio 2015\Projects\LazyGravesRevamped\LazyGraves\obj\Debug\LazyGraves.pdb
+C:\Users\NOOB\Documents\Visual Studio 2015\Projects\LazyGravesRevamped\LazyGraves\obj\Debug\LazyGraves.csprojResolveAssemblyReference.cache
