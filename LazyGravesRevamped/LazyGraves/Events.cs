@@ -44,7 +44,6 @@ namespace LazyGraves
             {
                 FarmHandler.LaneClear();
             }
-
         }
 
         public static void OnSpellCast(GameObject sender, GameObjectProcessSpellCastEventArgs args)
@@ -76,26 +75,29 @@ namespace LazyGraves
             }
         }
 
-        public static void OnPostAttack(GameObject target, EventArgs args)
+        public static void OnPostAttack(AttackableUnit target, EventArgs args)
         {
-            if (Player.HasBuff("GravesBasicAttackAmmo2") || !Spells.E.IsReady() || !Init.ComboMenu["useEreload"].Cast<CheckBox>().CurrentValue)
+            if (Player.HasBuff("GravesBasicAttackAmmo2") || !Spells.E.IsReady() ||
+                !Init.ComboMenu["useEreload"].Cast<CheckBox>().CurrentValue || !(
+                target.Type == GameObjectType.AIHeroClient || target.Type == GameObjectType.NeutralMinionCamp ||
+                target.Type == GameObjectType.obj_AI_Minion))
                 return;
-            var direction = (Player.ServerPosition + Game.CursorPos).To2D().Normalized();
+            var direction = (Game.CursorPos - Player.ServerPosition).To2D().Normalized();
 
             for (var step = 0f; step < 360; step += 30)
             {
                 for (var a = 450; a > 0; a -= 50)
                 {
-                    var currentAngle = step * (float)Math.PI / 90;
+                    var currentAngle = step*(float) Math.PI/90;
                     var currentCheckPoint = Player.ServerPosition.To2D() +
-                                            a * direction.Rotated(currentAngle);
+                                            a*direction.Rotated(currentAngle);
 
-                    if (!Helpers.IsSafePosition((Vector3)currentCheckPoint) ||
+                    if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
                         NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
                         NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Building))
                         continue;
                     {
-                        Spells.E.Cast((Vector3)currentCheckPoint);
+                        Spells.E.Cast((Vector3) currentCheckPoint);
                     }
                 }
             }
@@ -113,9 +115,9 @@ namespace LazyGraves
                 {
                     for (var a = 200; a < 450; a += 50)
                     {
-                        var currentAngle = step*(float) Math.PI / 90;
+                        var currentAngle = step*(float) Math.PI/90;
                         var currentCheckPoint = Player.ServerPosition.To2D() +
-                                                a * direction.Rotated(currentAngle);
+                                                a*direction.Rotated(currentAngle);
 
                         if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
                             NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
@@ -131,8 +133,6 @@ namespace LazyGraves
             if (Init.MiscMenu["gapcloserW"].Cast<CheckBox>().CurrentValue &&
                 Spells.W.IsReady() && Player.Distance(e.End) <= Spells.W.Range)
                 Spells.W.Cast(e.End);
-            {
-            }
         }
     }
 }
