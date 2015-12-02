@@ -45,11 +45,6 @@ namespace LazyLucian
             {
                 HarassHandler.Harass();
             }
-            else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
-            {
-                FarmHandler.LaneClear();
-                FarmHandler.JungleClear();
-            }
         }
 
         public static void OnGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
@@ -85,6 +80,7 @@ namespace LazyLucian
             }
         }
 
+
         public static void OnCastSpell(GameObject sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (sender.IsDead || !sender.IsMe) return;
@@ -98,6 +94,15 @@ namespace LazyLucian
                 case SpellSlot.W:
                     Orbwalker.ResetAutoAttack();
                     break;
+            }
+        }
+
+        public static void OnAfterAttack(AttackableUnit target, EventArgs args)
+        {
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
+                {
+                FarmHandler.LaneClear();
+                FarmHandler.JungleClear();
             }
         }
 
@@ -162,5 +167,6 @@ namespace LazyLucian
                 new Circle { Color = Color.DarkBlue, Radius = Spells.R.Range }.Draw(ObjectManager.Player.Position);
             }
         }
+
     }
 }

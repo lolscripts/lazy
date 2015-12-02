@@ -182,6 +182,7 @@ namespace LazyLucian
             Obj_AI_Base.OnProcessSpellCast += Events.OnProcessSpellCast;
             Obj_AI_Base.OnSpellCast += Events.OnCastSpell;
             Drawing.OnDraw += Events.OnDraw;
+            Orbwalker.OnPostAttack += Events.OnAfterAttack;
         }
     }
 }
