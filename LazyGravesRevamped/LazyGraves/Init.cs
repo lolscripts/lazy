@@ -79,9 +79,9 @@ namespace LazyGraves
             HarassMenu.Add("wMana", new Slider("Min Mana to use: ", 20, 1));
             HarassMenu.AddSeparator();
 
-            HarassMenu.AddLabel("E - True Grit");
-            HarassMenu.Add("useEreload", new CheckBox("Use to reload"));
-            HarassMenu.Add("eMana", new Slider("Min Mana to use: ", 20, 1));
+            //HarassMenu.AddLabel("E - True Grit");
+            //HarassMenu.Add("useEreload", new CheckBox("Use to reload"));
+            //HarassMenu.Add("eMana", new Slider("Min Mana to use: ", 20, 1));
             HarassMenu.AddSeparator();
 
 
