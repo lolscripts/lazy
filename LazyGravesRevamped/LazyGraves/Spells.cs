@@ -112,11 +112,11 @@ namespace LazyGraves
                                 Player.HealthPercent < unit.HealthPercent && Helpers.GetComboDamage(unit) < unit.Health)
                 )
             {
-                for (var step = 0f; step < 90; step += 15)
+                for (var step = 0f; step < 360; step += 60)
                 {
                     for (var a = 450; a != 0; a -= 50)
                     {
-                        var currentAngle = step*(float) Math.PI/360;
+                        var currentAngle = step*(float) Math.PI/90;
                         var extended = unit.ServerPosition.Extend(Player, a);
                         var currentCheckPoint = unit.ServerPosition.To2D() +
                                                 extended.Rotated(currentAngle);
@@ -148,11 +148,11 @@ namespace LazyGraves
                     || unit.IsDead || unit.IsZombie)
                     return;
 
-                for (var step = 0f; step < 90; step += 15)
+                for (var step = 0f; step < 360; step += 60)
                 {
                     for (var a = 450; a != 0; a -= 50)
                     {
-                        var currentAngle = step*(float) Math.PI/360;
+                        var currentAngle = step*(float) Math.PI/90;
                         var extended = Player.ServerPosition.Extend(unit, a);
                         var currentCheckPoint = unit.ServerPosition.To2D() +
                                                 extended.Rotated(currentAngle);

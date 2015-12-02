@@ -79,35 +79,32 @@ namespace LazyGraves
             if (Player.HasBuff("GravesBasicAttackAmmo2") || !Spells.E.IsReady())
                 return;
 
-            if ((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
-                 target.Type == GameObjectType.AIHeroClient &&
-                 Init.ComboMenu["useEreload"].Cast<CheckBox>().CurrentValue) ||
-                (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
-                 target.Type == GameObjectType.obj_AI_Minion &&
-                 Init.FarmMenu["useEreload"].Cast<CheckBox>().CurrentValue &&
-                 Player.ManaPercent > Init.FarmMenu["eManaLane"].Cast<Slider>().CurrentValue) ||
-                (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) &&
-                 target.Type == GameObjectType.NeutralMinionCamp &&
-                 Init.FarmMenu["useEreload"].Cast<CheckBox>().CurrentValue))
+            if ((target.Type != GameObjectType.AIHeroClient ||
+                 !Init.ComboMenu["useEreload"].Cast<CheckBox>().CurrentValue) &&
+                (target.Type != GameObjectType.obj_AI_Minion ||
+                 !Init.FarmMenu["useEreload"].Cast<CheckBox>().CurrentValue ||
+                 !(Player.ManaPercent > Init.FarmMenu["eManaLane"].Cast<Slider>().CurrentValue)) &&
+                (target.Type != GameObjectType.NeutralMinionCamp ||
+                 !Init.FarmMenu["useEreload"].Cast<CheckBox>().CurrentValue)) return;
 
-                for (var step = 0f; step < 90; step += 15)
+            for (var step = 0f; step < 360; step += 60)
+            {
+                for (var a = 450; a != 0; a -= 50)
                 {
-                    for (var a = 450; a != 0; a -= 50)
-                    {
-                        var currentAngle = step * (float)Math.PI / 360;
-                        var extended = Player.ServerPosition.Extend(Game.CursorPos, a);
-                        var currentCheckPoint = Game.CursorPos.To2D() +
-                                                extended.Rotated(currentAngle);
+                    var currentAngle = step * (float)Math.PI / 90;
+                    var extended = Player.ServerPosition.Extend(Game.CursorPos, a);
+                    var currentCheckPoint = Game.CursorPos.To2D() +
+                                            extended.Rotated(currentAngle);
 
-                        if (!Helpers.IsSafePosition((Vector3)currentCheckPoint) ||
-                            NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
-                            NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Building))
-                            continue;
-                        {
-                            Spells.E.Cast((Vector3)currentCheckPoint);
-                        }
+                    if (!Helpers.IsSafePosition((Vector3)currentCheckPoint) ||
+                        NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
+                        NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Building))
+                        continue;
+                    {
+                        Spells.E.Cast((Vector3)currentCheckPoint);
                     }
                 }
+            }
         }
 
         public static void OnGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)

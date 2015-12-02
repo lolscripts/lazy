@@ -37,9 +37,9 @@ namespace LazyGraves
             if (!Spells.Q.IsReady() || !Init.FarmMenu["useQjungle"].Cast<CheckBox>().CurrentValue) return;
             var monster = EntityManager.MinionsAndMonsters.GetJungleMonsters(ObjectManager.Player.ServerPosition,
                 Spells.Q.Range)
-                .First(x => x.IsValidTarget(Spells.Q.Range));
-            if (monster != null)
-                Spells.Q.Cast(monster);
+                .FirstOrDefault(x => x.IsValidTarget(Spells.Q.Range));
+
+            Spells.Q.Cast(monster);
         }
     }
 }

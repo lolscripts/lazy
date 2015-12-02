@@ -103,7 +103,7 @@ namespace LazyGraves
             FarmMenu.AddLabel("Q - Buckshot");
             FarmMenu.Add("useQlane", new CheckBox("Use in LaneClear"));
             FarmMenu.Add("qManaLane", new Slider("Min Mana to use in LaneClear: ", 20, 1));
-            FarmMenu.Add("qMinionsLane", new Slider("Min Minions to use in LaneClear: ", 3, 1, 5));
+            FarmMenu.Add("qMinionsLane", new Slider("Min Minions to use in LaneClear: ", 3, 1, 6));
             FarmMenu.AddSeparator();
 
             FarmMenu.Add("useQjungle", new CheckBox("Use in JungleClear"));
@@ -111,7 +111,7 @@ namespace LazyGraves
 
             FarmMenu.AddLabel("E - True Grit");
             FarmMenu.Add("useEreload", new CheckBox("Use in LaneClear"));
-            FarmMenu.Add("eManaLane", new Slider("Min Mana to use in LaneClear: ", 20, 1));
+            FarmMenu.Add("eManaLane", new Slider("Min Mana to use in LaneClear: ", 20));
             FarmMenu.AddSeparator();
 
             FarmMenu.Add("useEjungle", new CheckBox("Use in JungleClear"));
