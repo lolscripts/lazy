@@ -78,9 +78,9 @@ namespace LazyGraves
         public static void OnPostAttack(AttackableUnit target, EventArgs args)
         {
             if (Player.HasBuff("GravesBasicAttackAmmo2") || !Spells.E.IsReady() ||
-                !Init.ComboMenu["useEreload"].Cast<CheckBox>().CurrentValue || !(
-                target.Type == GameObjectType.AIHeroClient || target.Type == GameObjectType.NeutralMinionCamp ||
-                target.Type == GameObjectType.obj_AI_Minion))
+                !Init.ComboMenu["useEreload"].Cast<CheckBox>().CurrentValue ||
+                !(Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) ||
+                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)))
                 return;
             var direction = (Game.CursorPos - Player.ServerPosition).To2D().Normalized();
 
