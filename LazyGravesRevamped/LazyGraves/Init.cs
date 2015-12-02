@@ -108,7 +108,7 @@ namespace LazyGraves
 
             FarmMenu.Add("useQjungle", new CheckBox("Use in JungleClear"));
             FarmMenu.AddSeparator();
-
+            /*
             FarmMenu.AddLabel("E - True Grit");
             FarmMenu.Add("useEreload", new CheckBox("Use in LaneClear"));
             FarmMenu.Add("eManaLane", new Slider("Min Mana to use in LaneClear: ", 20));
@@ -116,7 +116,7 @@ namespace LazyGraves
 
             FarmMenu.Add("useEjungle", new CheckBox("Use in JungleClear"));
             FarmMenu.AddSeparator();
-
+            */
 
             //-------------------------------------------------------------------------------------------------------------------
             /*

@@ -38,7 +38,7 @@ namespace LazyGraves
             var monster = EntityManager.MinionsAndMonsters.GetJungleMonsters(ObjectManager.Player.ServerPosition,
                 Spells.Q.Range)
                 .FirstOrDefault(x => x.IsValidTarget(Spells.Q.Range));
-
+            if (monster != null)
             Spells.Q.Cast(monster);
         }
     }

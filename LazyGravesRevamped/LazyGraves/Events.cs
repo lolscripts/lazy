@@ -36,13 +36,15 @@ namespace LazyGraves
                 HarassHandler.Harass();
             }
 
-            else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 FarmHandler.JungleClear();
+            }
+            else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            {
                 FarmHandler.LaneClear();
             }
-            
+
         }
 
         public static void OnSpellCast(GameObject sender, GameObjectProcessSpellCastEventArgs args)
@@ -76,25 +78,17 @@ namespace LazyGraves
 
         public static void OnPostAttack(GameObject target, EventArgs args)
         {
-            if (Player.HasBuff("GravesBasicAttackAmmo2") || !Spells.E.IsReady())
+            if (Player.HasBuff("GravesBasicAttackAmmo2") || !Spells.E.IsReady() || !Init.ComboMenu["useEreload"].Cast<CheckBox>().CurrentValue)
                 return;
+            var direction = (Player.ServerPosition + Game.CursorPos).To2D().Normalized();
 
-            if ((target.Type != GameObjectType.AIHeroClient ||
-                 !Init.ComboMenu["useEreload"].Cast<CheckBox>().CurrentValue) &&
-                (target.Type != GameObjectType.obj_AI_Minion ||
-                 !Init.FarmMenu["useEreload"].Cast<CheckBox>().CurrentValue ||
-                 !(Player.ManaPercent > Init.FarmMenu["eManaLane"].Cast<Slider>().CurrentValue)) &&
-                (target.Type != GameObjectType.NeutralMinionCamp ||
-                 !Init.FarmMenu["useEreload"].Cast<CheckBox>().CurrentValue)) return;
-
-            for (var step = 0f; step < 360; step += 60)
+            for (var step = 0f; step < 360; step += 30)
             {
-                for (var a = 450; a != 0; a -= 50)
+                for (var a = 450; a > 0; a -= 50)
                 {
                     var currentAngle = step * (float)Math.PI / 90;
-                    var extended = Player.ServerPosition.Extend(Game.CursorPos, a);
-                    var currentCheckPoint = Game.CursorPos.To2D() +
-                                            extended.Rotated(currentAngle);
+                    var currentCheckPoint = Player.ServerPosition.To2D() +
+                                            a * direction.Rotated(currentAngle);
 
                     if (!Helpers.IsSafePosition((Vector3)currentCheckPoint) ||
                         NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
@@ -119,9 +113,9 @@ namespace LazyGraves
                 {
                     for (var a = 200; a < 450; a += 50)
                     {
-                        var currentAngle = step*(float) Math.PI/120;
-                        var currentCheckPoint = sender.ServerPosition.To2D() +
-                                                a*direction.Rotated(currentAngle);
+                        var currentAngle = step*(float) Math.PI / 90;
+                        var currentCheckPoint = Player.ServerPosition.To2D() +
+                                                a * direction.Rotated(currentAngle);
 
                         if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
                             NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||

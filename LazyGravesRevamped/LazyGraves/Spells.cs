@@ -112,14 +112,15 @@ namespace LazyGraves
                                 Player.HealthPercent < unit.HealthPercent && Helpers.GetComboDamage(unit) < unit.Health)
                 )
             {
-                for (var step = 0f; step < 360; step += 60)
+                for (var step = 0f; step < 360; step += 30)
                 {
-                    for (var a = 450; a != 0; a -= 50)
+                    for (var a = 450; a > 0; a -= 50)
                     {
                         var currentAngle = step*(float) Math.PI/90;
                         var extended = unit.ServerPosition.Extend(Player, a);
-                        var currentCheckPoint = unit.ServerPosition.To2D() +
-                                                extended.Rotated(currentAngle);
+                        var direction = extended.Normalized();
+                        var currentCheckPoint = Player.ServerPosition.To2D() +
+                                            a * direction.Rotated(currentAngle);
 
                         if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
                             NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
@@ -148,14 +149,15 @@ namespace LazyGraves
                     || unit.IsDead || unit.IsZombie)
                     return;
 
-                for (var step = 0f; step < 360; step += 60)
+                for (var step = 0f; step < 360; step += 30)
                 {
-                    for (var a = 450; a != 0; a -= 50)
+                    for (var a = 450; a > 0; a -= 50)
                     {
                         var currentAngle = step*(float) Math.PI/90;
                         var extended = Player.ServerPosition.Extend(unit, a);
-                        var currentCheckPoint = unit.ServerPosition.To2D() +
-                                                extended.Rotated(currentAngle);
+                        var direction = extended.Normalized();
+                        var currentCheckPoint = Player.ServerPosition.To2D() +
+                                            a * direction.Rotated(currentAngle);
 
                         if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
                             NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
