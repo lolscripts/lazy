@@ -313,7 +313,7 @@ namespace LazyLucian
                     _wardTime = Game.Time;
                 }
 
-                if (!(ObjectManager.Player.Distance(predPos) < 600) || enemy.IsValidTarget() ||
+                if (!(ObjectManager.Player.Distance(predPos) < 400) || enemy.IsValidTarget() ||
                     !(Game.Time - _wardTime < 5)) continue;
 
                 _wardTime = Game.Time - 6;

@@ -329,8 +329,8 @@ namespace LazyLucian
 
         public static void CastR()
         {
-            var unit = TargetSelector.GetTarget(1500, DamageType.Physical);
-            if (!unit.IsValidTarget(R.Range)) return;
+            var unit = TargetSelector.GetTarget(1800, DamageType.Physical);
+            if (!unit.IsValidTarget(1800)) return;
 
             var col = R.GetPrediction(unit);
             var allies = EntityManager.Heroes.Allies.Count(
@@ -338,16 +338,15 @@ namespace LazyLucian
             var rDmg = ObjectManager.Player.GetSpellDamage(unit, SpellSlot.R)*Helpers.NumShots();
             var tDis = ObjectManager.Player.Distance(unit.ServerPosition);
 
-            if (((unit.Distance(ObjectManager.Player.ServerPosition) < Q.Range && Q.IsReady())) ||
+            if (((unit.Distance(ObjectManager.Player.ServerPosition) < ObjectManager.Player.GetAutoAttackRange() && Q.IsReady())) ||
                 col.HitChance == HitChance.Collision ||
                 !unit.IsValidTarget() ||
-                unit.HasBuffOfType(BuffType.Invulnerability) ||
+                unit.HasBuffOfType(BuffType.Invulnerability) || 
                 unit.IsZombie ||
                 allies > 1)
                 return;
 
-            if ((rDmg/1.4 < unit.Health) || (tDis > 1500) ||
-                Events.LastRcast < Game.Time + 5) return;
+            if ((rDmg/1.4 < unit.Health) || (tDis > 1500)) return;
             {
                 R.Cast(unit);
             }
@@ -356,7 +355,7 @@ namespace LazyLucian
 
         public static void LockR() //credits Brian(L$)
         {
-            var target = TargetSelector.GetTarget(1500, DamageType.Physical);
+            var target = TargetSelector.GetTarget(1800, DamageType.Physical);
             if (target == null)
             {
                 return;
