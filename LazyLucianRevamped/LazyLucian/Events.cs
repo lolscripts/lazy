@@ -45,6 +45,14 @@ namespace LazyLucian
             {
                 HarassHandler.Harass();
             }
+            else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            {
+                FarmHandler.LaneClear();
+            }
+            else if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            {
+                FarmHandler.JungleClear();
+            }
         }
 
         public static void OnGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
@@ -99,11 +107,7 @@ namespace LazyLucian
 
         public static void OnAfterAttack(AttackableUnit target, EventArgs args)
         {
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
-            {
-                FarmHandler.LaneClear();
-                FarmHandler.JungleClear();
-            }
+            
         }
 
         public static void OnProcessSpellCast(GameObject sender, GameObjectProcessSpellCastEventArgs args)

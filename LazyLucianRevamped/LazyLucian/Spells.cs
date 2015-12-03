@@ -332,24 +332,34 @@ namespace LazyLucian
             var unit = TargetSelector.GetTarget(1800, DamageType.Physical);
             if (!unit.IsValidTarget(1800)) return;
 
-            var col = R.GetPrediction(unit);
+            var col = Prediction.Position.PredictLinearMissile(unit, R.Range, R.Width, R.CastDelay, R.Speed, 0, null, true);
             var allies = EntityManager.Heroes.Allies.Count(
                 allied => !allied.IsDead && allied.Distance(unit) <= 500);
             var rDmg = ObjectManager.Player.GetSpellDamage(unit, SpellSlot.R)*Helpers.NumShots();
             var tDis = ObjectManager.Player.Distance(unit.ServerPosition);
 
             if (((unit.Distance(ObjectManager.Player.ServerPosition) < ObjectManager.Player.GetAutoAttackRange() && Q.IsReady())) ||
-                col.HitChance == HitChance.Collision ||
-                !unit.IsValidTarget() ||
+                (col.HitChance == HitChance.Collision &&
+                col.CollisionObjects.OfType<Obj_AI_Minion>().Count() < 3||
+                !unit.IsValidTarget()) ||
                 unit.HasBuffOfType(BuffType.Invulnerability) || 
                 unit.IsZombie ||
                 allies > 1)
                 return;
 
-            if ((rDmg/1.4 < unit.Health) || (tDis > 1500)) return;
-            {
+            if (rDmg * 0.8 > unit.Health && tDis < 700 && !Q.IsReady())
                 R.Cast(unit);
-            }
+            else if (rDmg * 0.7 > unit.Health && tDis < 800)
+                R.Cast(unit);
+            else if (rDmg * 0.6 > unit.Health && tDis < 900)
+                R.Cast(unit);
+            else if (rDmg * 0.5 > unit.Health && tDis < 1000)
+                R.Cast(unit);
+            else if (rDmg * 0.4 > unit.Health && tDis < 1100)
+                R.Cast(unit);
+            else if (rDmg * 0.3 > unit.Health && tDis < 1200)
+                R.Cast(unit);
+            return;
         }
 
 
