@@ -114,7 +114,7 @@ namespace LazyLucian
         {
             if (sender.IsDead || !sender.IsMe) return;
             {
-                switch (args.Slot)
+               switch (args.Slot)
                 {
                     case SpellSlot.Q:
                     case SpellSlot.W:
@@ -132,20 +132,11 @@ namespace LazyLucian
                         }
                         break;
                     case SpellSlot.E:
-                        Orbwalker.ResetAutoAttack();
                         PassiveUp = true;
+                        Orbwalker.ResetAutoAttack();
                         break;                    
                 }
             }
-        }
-
-        public bool CheckPassive()
-        {
-            if (ObjectManager.Player.HasBuff("LucianPassiveBuff"))
-            {
-                return PassiveUp = true;
-            }
-            return false;
         }
 
         public static void OnDraw(EventArgs args)

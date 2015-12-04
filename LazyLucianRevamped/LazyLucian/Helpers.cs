@@ -302,6 +302,11 @@ namespace LazyLucian
             return slot;
         }
 
+        public static bool HasPassiveBuff()
+        {
+            return ObjectManager.Player.HasBuff("lucianpassivebuff");
+        }
+
         public static void BushWard()
         {
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsValidTarget(450)))

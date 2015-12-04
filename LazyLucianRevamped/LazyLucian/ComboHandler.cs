@@ -15,7 +15,9 @@ namespace LazyLucian
                 : TargetSelector.GetTarget(Spells.Q1.Range+Spells.E.Range, DamageType.Physical);
 
             if (target == null ||
-                (Init.ComboMenu["spellWeaving"].Cast<CheckBox>().CurrentValue && Events.PassiveUp) ||
+                
+                (Init.ComboMenu["spellWeaving"].Cast<CheckBox>().CurrentValue &&
+                (Events.PassiveUp || Helpers.HasPassiveBuff())) ||
                 Orbwalker.IsAutoAttacking ||
                 ObjectManager.Player.IsDashing() ||
                 target.IsZombie ||
