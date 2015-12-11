@@ -28,6 +28,7 @@ namespace Lazy_Illaoi
             if (target != null)
             {
                 var ePred = E.GetPrediction(target);
+                //var saveMana = Player.Mana > Helpers.Rmana + Helpers.Wmana + Helpers.Qmana;
 
 
                 if (Init.ComboMenu["useEQ"].Cast<CheckBox>().CurrentValue && ePred.HitChance >= HitChance.Medium || !Q.IsReady()) return;
