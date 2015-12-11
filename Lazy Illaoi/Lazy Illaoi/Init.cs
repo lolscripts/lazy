@@ -35,6 +35,7 @@ namespace Lazy_Illaoi
             ComboMenu.AddGroupLabel("Combo Settings");
             ComboMenu.AddLabel("Q - Tentacle Smash");
             ComboMenu.Add("useQ", new CheckBox("Use Q Logic"));
+            ComboMenu.Add("useEQ", new CheckBox("use E first if possible"));
             ComboMenu.AddSeparator();
 
             ComboMenu.AddLabel("W - Harsh Lesson");

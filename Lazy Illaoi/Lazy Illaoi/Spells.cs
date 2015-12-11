@@ -25,10 +25,13 @@ namespace Lazy_Illaoi
         {
             var target = EntityManager.Heroes.Enemies.FirstOrDefault(x => x.IsValidTarget(Q.Range));
             var ghost = ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(x => x.IsValidTarget(Q.Range) && x.HasBuff("illaoiespirit"));
-            //var saveMana = Player.Mana > Helpers.Rmana + Helpers.Wmana + Helpers.Qmana;
+            if (target != null)
+            {
+                var ePred = E.GetPrediction(target);
 
 
-            if (!Q.IsReady()) return;
+                if (Init.ComboMenu["useEQ"].Cast<CheckBox>().CurrentValue && ePred.HitChance >= HitChance.Medium || !Q.IsReady()) return;
+            }
 
             if (target != null && ghost != null)
             {
