@@ -31,7 +31,7 @@ namespace Lazy_Illaoi
                 //var saveMana = Player.Mana > Helpers.Rmana + Helpers.Wmana + Helpers.Qmana;
 
 
-                if (Init.ComboMenu["useEQ"].Cast<CheckBox>().CurrentValue && ePred.HitChance >= HitChance.Medium || !Q.IsReady()) return;
+                if ((Init.ComboMenu["useEQ"].Cast<CheckBox>().CurrentValue && ePred.HitChance >= HitChance.Medium && E.IsReady()) || !Q.IsReady()) return;
             }
 
             if (target != null && ghost != null)
