@@ -139,7 +139,8 @@ namespace LazyLucian
             MiscMenu = Menu.AddSubMenu("Misc", "Misc");
             MiscMenu.AddGroupLabel("Miscellaneous Settings");
             MiscMenu.AddLabel("Anti Gapcloser Settings");
-            MiscMenu.Add("gapcloser", new CheckBox("Use E - Relentless Pursuit to avoid non targeted"));
+            MiscMenu.Add("gapcloser", new CheckBox("Use E - to avoid non targeted"));
+            MiscMenu.Add("gapcloserT", new CheckBox("Use E - to avoid targeted"));
             MiscMenu.AddSeparator();
             MiscMenu.AddGroupLabel("Other Settings");
             MiscMenu.Add("useKs", new CheckBox("Use KillSecure - Logic"));

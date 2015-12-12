@@ -62,13 +62,12 @@ namespace LazyLucian
             const int distance = 475;
             const int stepSize = 20;
 
-            if (!Spells.E.IsReady() || !sender.IsValidTarget(Spells.E.Range) ||
-                !Init.MiscMenu["gapcloser"].Cast<CheckBox>().CurrentValue ||
-                e.Type == Gapcloser.GapcloserType.Targeted ||
-                sender.IsAlly &&
-                !(Player.HasBuff("rengarralertsound")
-                && sender.IsEnemy
-                && sender.IsValidTarget()))
+            if (!Spells.E.IsReady() ||
+                !(Init.MiscMenu["gapcloser"].Cast<CheckBox>().CurrentValue &&
+                e.Type == Gapcloser.GapcloserType.Skillshot) ||
+                !(Init.MiscMenu["gapcloserT"].Cast<CheckBox>().CurrentValue &&
+                e.Type == Gapcloser.GapcloserType.Targeted) ||
+                sender.IsAlly || !sender.IsValid())
                 return;
             {
                 for (var step = 0f; step < 360; step += stepSize)
