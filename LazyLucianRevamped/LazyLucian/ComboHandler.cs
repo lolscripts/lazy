@@ -58,6 +58,10 @@ namespace LazyLucian
             {
                 Spells.CastEcombo();
             }
+            if (Init.ComboMenu["useEmouse"].Cast<CheckBox>().CurrentValue)
+            {
+                Spells.CastEmouse();
+            }
 
 
         }

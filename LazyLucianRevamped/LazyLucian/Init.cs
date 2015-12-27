@@ -47,6 +47,7 @@ namespace LazyLucian
 
             ComboMenu.AddLabel("E - Relentless Pursuit");
             ComboMenu.Add("useEcombo", new CheckBox("Use E Logic"));
+            ComboMenu.Add("useEmouse", new CheckBox("Use E to Mouse"));
             ComboMenu.Add("eMana", new Slider("Min Mana to use: ", 20, 1));
             ComboMenu.AddSeparator();
 

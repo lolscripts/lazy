@@ -22,6 +22,7 @@ namespace LazyLucian
         *            |_|                                                                    
         */
 
+        public static AIHeroClient Player = ObjectManager.Player;
         public static Spell.Targeted Q = new Spell.Targeted(SpellSlot.Q, 675);
         public static Spell.Skillshot W = new Spell.Skillshot(SpellSlot.W, 1000, SkillShotType.Linear, 250, 1600, 80);
         public static Spell.Skillshot W1 = new Spell.Skillshot(SpellSlot.W, 500, SkillShotType.Linear, 250, 1600, 80);
@@ -46,7 +47,7 @@ namespace LazyLucian
         public static void CastQ()
         {
             var target = TargetSelector.SelectedTarget != null &&
-                         TargetSelector.SelectedTarget.Distance(ObjectManager.Player) < 2000
+                         TargetSelector.SelectedTarget.Distance(Player) < 2000
                 ? TargetSelector.SelectedTarget
                 : TargetSelector.GetTarget(Q.Range, DamageType.Physical);
 
@@ -62,7 +63,7 @@ namespace LazyLucian
             var target = TargetSelector.GetTarget(Q1.Range + E.Range, DamageType.Physical);
             {
                 if (!(target.IsValidTarget(Q1.Range + E.Range) &&
-                      ObjectManager.Player.GetSpellDamage(target, SpellSlot.Q) >= target.Health + 20)) return;
+                      Player.GetSpellDamage(target, SpellSlot.Q) >= target.Health + 20)) return;
 
                 if ((target.IsValidTarget(Q.Range)))
                 {
@@ -83,8 +84,8 @@ namespace LazyLucian
 
             if (!W.IsReady()) return;
             {
-                if (target.IsValidTarget(W.Range) && target != null &&
-                    (ObjectManager.Player.GetSpellDamage(target, SpellSlot.W) >= target.Health + 20) &&
+                if (target.IsValidTarget(W.Range) &&
+                    (Player.GetSpellDamage(target, SpellSlot.W) >= target.Health + 20) &&
                     W.GetPrediction(target).HitChance >= HitChance.Medium)
                     W.Cast(target);
             }
@@ -93,7 +94,7 @@ namespace LazyLucian
         public static void CastExtendedQ()
         {
             var target = TargetSelector.SelectedTarget != null &&
-                         TargetSelector.SelectedTarget.Distance(ObjectManager.Player) < 2000
+                         TargetSelector.SelectedTarget.Distance(Player) < 2000
                 ? TargetSelector.SelectedTarget
                 : TargetSelector.GetTarget(Q1.Range, DamageType.Physical);
 
@@ -102,15 +103,15 @@ namespace LazyLucian
 
             var predPos = Q1.GetPrediction(target);
             var minions =
-                EntityManager.MinionsAndMonsters.EnemyMinions.Where(m => m.Distance(ObjectManager.Player) <= Q.Range);
-            var champs = EntityManager.Heroes.Enemies.Where(m => m.Distance(ObjectManager.Player) <= Q.Range);
+                EntityManager.MinionsAndMonsters.EnemyMinions.Where(m => m.Distance(Player) <= Q.Range);
+            var champs = EntityManager.Heroes.Enemies.Where(m => m.Distance(Player) <= Q.Range);
             var monsters =
-                EntityManager.MinionsAndMonsters.Monsters.Where(m => m.Distance(ObjectManager.Player) <= Q.Range);
+                EntityManager.MinionsAndMonsters.Monsters.Where(m => m.Distance(Player) <= Q.Range);
             {
                 foreach (var minion in from minion in minions
                     let polygon = new Geometry.Polygon.Rectangle(
-                        (Vector2) ObjectManager.Player.ServerPosition,
-                        ObjectManager.Player.ServerPosition.Extend(minion.ServerPosition, Q1.Range), 65f)
+                        (Vector2) Player.ServerPosition,
+                        Player.ServerPosition.Extend(minion.ServerPosition, Q1.Range), 65f)
                     where polygon.IsInside(predPos.CastPosition)
                     select minion)
                 {
@@ -119,8 +120,8 @@ namespace LazyLucian
 
                 foreach (var champ in from champ in champs
                     let polygon = new Geometry.Polygon.Rectangle(
-                        (Vector2) ObjectManager.Player.ServerPosition,
-                        ObjectManager.Player.ServerPosition.Extend(champ.ServerPosition, Q1.Range), 65f)
+                        (Vector2) Player.ServerPosition,
+                        Player.ServerPosition.Extend(champ.ServerPosition, Q1.Range), 65f)
                     where polygon.IsInside(predPos.CastPosition)
                     select champ)
                 {
@@ -129,8 +130,8 @@ namespace LazyLucian
 
                 foreach (var monster in from monster in monsters
                     let polygon = new Geometry.Polygon.Rectangle(
-                        (Vector2) ObjectManager.Player.ServerPosition,
-                        ObjectManager.Player.ServerPosition.Extend(monster.ServerPosition, Q1.Range), 65f)
+                        (Vector2) Player.ServerPosition,
+                        Player.ServerPosition.Extend(monster.ServerPosition, Q1.Range), 65f)
                     where polygon.IsInside(predPos.CastPosition)
                     select monster)
                 {
@@ -193,15 +194,15 @@ namespace LazyLucian
         public static void CastEcombo()
         {
             var target = TargetSelector.GetTarget(E.Range + Q1.Range, DamageType.Physical);
-            var direction1 = (ObjectManager.Player.ServerPosition - target.ServerPosition).To2D().Normalized();
-            var direction2 = (target.ServerPosition - ObjectManager.Player.ServerPosition).To2D().Normalized();
+            var direction1 = (Player.ServerPosition - target.ServerPosition).To2D().Normalized();
+            var direction2 = (target.ServerPosition - Player.ServerPosition).To2D().Normalized();
             const int maxDistance = 475;
             const int stepSize = 20;
 
-            if (target.HealthPercent <= ObjectManager.Player.HealthPercent &&
-                (ObjectManager.Player.HealthPercent > 30 ||
+            if (target.HealthPercent <= Player.HealthPercent &&
+                (Player.HealthPercent > 30 ||
                  Helpers.GetComboDamage(target) >= target.Health) &&
-                target.Distance(ObjectManager.Player) <= 975)
+                target.Distance(Player) <= 975)
             {
                 for (var step = 0f; step < 360; step += stepSize)
                 {
@@ -219,8 +220,8 @@ namespace LazyLucian
                 }
             }
 
-            else if (target.HealthPercent > ObjectManager.Player.HealthPercent &&
-                     target.Distance(ObjectManager.Player) <= 400)
+            else if (target.HealthPercent > Player.HealthPercent &&
+                     target.Distance(Player) <= 400)
             {
                 for (var step = 0f; step < 360; step += stepSize)
                 {
@@ -239,13 +240,37 @@ namespace LazyLucian
             }
         }
 
+        public static void CastEmouse()
+        {
+            var target = TargetSelector.GetTarget(E.Range + Q1.Range, DamageType.Physical);
+            var direction = (Game.CursorPos - Player.ServerPosition).To2D().Normalized();
+            const int maxDistance = 475;
+            const int stepSize = 20;
+
+            if (!(target.Distance(Player) <= 975)) return;
+            for (var step = 0f; step < 360; step += stepSize)
+            {
+                var currentAngle = step*(float) Math.PI/120;
+                var currentCheckPoint = target.ServerPosition.To2D() +
+                                        maxDistance*direction.Rotated(currentAngle);
+
+                if (!Helpers.IsSafePosition((Vector3) currentCheckPoint) ||
+                    NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Wall) ||
+                    NavMesh.GetCollisionFlags(currentCheckPoint).HasFlag(CollisionFlags.Building))
+                    continue;
+                {
+                    E.Cast((Vector3) currentCheckPoint);
+                }
+            }
+        }
+
         public static void DashToExtendedQ()
         {
             var target = TargetSelector.GetTarget(E.Range + Q1.Range, DamageType.Physical);
 
             if (!target.IsValidTarget(E.Range + Q1.Range)) return;
 
-            var dashSpeed = (int) (E.Range/(700 + ObjectManager.Player.MoveSpeed));
+            var dashSpeed = (int) (E.Range/(700 + Player.MoveSpeed));
             var targetPrediction = Helpers.EqExtendedPrediction(target, dashSpeed).To2D();
 
             var minions = EntityManager.MinionsAndMonsters.EnemyMinions
@@ -265,7 +290,7 @@ namespace LazyLucian
                         .Select(minionPrediction => Helpers.GetCircleLineInteraction(
                             minionPrediction.To3D(),
                             targetPrediction,
-                            ObjectManager.Player.ServerPosition.To2D(),
+                            Player.ServerPosition.To2D(),
                             E.Range)).Select(inter => inter.GetBestInter(target)))
 
                 foreach (
@@ -274,7 +299,7 @@ namespace LazyLucian
                             .Select(minionPrediction => Helpers.GetCircleLineInteraction(
                                 minionPrediction.To3D(),
                                 targetPrediction,
-                                ObjectManager.Player.ServerPosition.To2D(),
+                                Player.ServerPosition.To2D(),
                                 E.Range)).Select(inter => inter.GetBestInter(target)))
 
                     foreach (
@@ -283,7 +308,7 @@ namespace LazyLucian
                                 .Select(monsterPrediction => Helpers.GetCircleLineInteraction(
                                     monsterPrediction.To3D(),
                                     targetPrediction,
-                                    ObjectManager.Player.ServerPosition.To2D(),
+                                    Player.ServerPosition.To2D(),
                                     E.Range)).Select(inter => inter.GetBestInter(target)))
 
 
@@ -332,36 +357,36 @@ namespace LazyLucian
             var unit = TargetSelector.GetTarget(1800, DamageType.Physical);
             if (!unit.IsValidTarget(1800)) return;
 
-            var col = Prediction.Position.PredictLinearMissile(unit, R.Range, R.Width, R.CastDelay, R.Speed, 0, null, true);
+            var col = Prediction.Position.PredictLinearMissile(unit, R.Range, R.Width, R.CastDelay, R.Speed, 0, null,
+                true);
             var allies = EntityManager.Heroes.Allies.Count(
                 allied => !allied.IsDead && allied.Distance(unit) <= 500);
-            var rDmg = ObjectManager.Player.GetSpellDamage(unit, SpellSlot.R)*Helpers.NumShots();
-            var tDis = ObjectManager.Player.Distance(unit.ServerPosition);
+            var rDmg = Player.GetSpellDamage(unit, SpellSlot.R)*Helpers.NumShots();
+            var tDis = Player.Distance(unit.ServerPosition);
 
-            if (((unit.Distance(ObjectManager.Player.ServerPosition) < ObjectManager.Player.GetAutoAttackRange() && Q.IsReady())) ||
+            if (((unit.Distance(Player.ServerPosition) < Player.GetAutoAttackRange() &&
+                  Q.IsReady())) ||
                 (col.HitChance == HitChance.Collision &&
-                col.CollisionObjects.OfType<Obj_AI_Minion>().Count() < 3||
-                !unit.IsValidTarget()) ||
-                unit.HasBuffOfType(BuffType.Invulnerability) || 
+                 col.CollisionObjects.OfType<Obj_AI_Minion>().Count() < 3 ||
+                 !unit.IsValidTarget()) ||
+                unit.HasBuffOfType(BuffType.Invulnerability) ||
                 unit.IsZombie ||
                 allies > 1)
                 return;
 
-            if (rDmg * 0.8 > unit.Health && tDis < 700 && !Q.IsReady())
+            if (rDmg*0.8 > unit.Health && tDis < 700 && !Q.IsReady())
                 R.Cast(unit);
-            else if (rDmg * 0.7 > unit.Health && tDis < 800)
+            else if (rDmg*0.7 > unit.Health && tDis < 800)
                 R.Cast(unit);
-            else if (rDmg * 0.6 > unit.Health && tDis < 900)
+            else if (rDmg*0.6 > unit.Health && tDis < 900)
                 R.Cast(unit);
-            else if (rDmg * 0.5 > unit.Health && tDis < 1000)
+            else if (rDmg*0.5 > unit.Health && tDis < 1000)
                 R.Cast(unit);
-            else if (rDmg * 0.4 > unit.Health && tDis < 1100)
+            else if (rDmg*0.4 > unit.Health && tDis < 1100)
                 R.Cast(unit);
-            else if (rDmg * 0.3 > unit.Health && tDis < 1200)
+            else if (rDmg*0.3 > unit.Health && tDis < 1200)
                 R.Cast(unit);
-            return;
         }
-
 
         public static void LockR() //credits Brian(L$)
         {
@@ -370,10 +395,10 @@ namespace LazyLucian
             {
                 return;
             }
-            var endPos = (ObjectManager.Player.ServerPosition - target.ServerPosition).Normalized();
+            var endPos = (Player.ServerPosition - target.ServerPosition).Normalized();
             var predPos = R.GetPrediction(target).CastPosition.To2D();
             var fullPoint = new Vector2(predPos.X + endPos.X*R.Range*0.98f, predPos.Y + endPos.Y*R.Range*0.98f);
-            var closestPoint = ObjectManager.Player.ServerPosition.To2D()
+            var closestPoint = Player.ServerPosition.To2D()
                 .Closest(new List<Vector2> {predPos, fullPoint});
 
             if (closestPoint.IsValid() &&
