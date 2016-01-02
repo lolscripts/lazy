@@ -71,7 +71,7 @@ namespace LazyLucian
                 var monster =
                     EntityManager.MinionsAndMonsters.GetJungleMonsters(Player.ServerPosition,
                         Spells.Q.Range)
-                        .LastOrDefault(x => x.IsValidTarget(Spells.Q.Range));
+                        .FirstOrDefault(x => x.IsValidTarget(Spells.Q.Range));
                 if (monster != null)
                     Spells.Q.Cast(monster);
             }
@@ -83,7 +83,7 @@ namespace LazyLucian
             {
                 var monster =
                     EntityManager.MinionsAndMonsters.GetJungleMonsters(Player.ServerPosition, 600)
-                        .LastOrDefault(x => x.IsValidTarget());
+                        .FirstOrDefault(x => x.IsValidTarget());
                 if (monster != null)
                     Spells.W.Cast(monster.ServerPosition);
             }
