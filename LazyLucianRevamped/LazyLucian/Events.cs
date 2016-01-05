@@ -31,8 +31,9 @@ namespace LazyLucian
             
             if (Init.ComboMenu["useRkillable"].Cast<CheckBox>().CurrentValue)
             {
-                if (Spells.R.IsReady() && Game.Time-LastRcast > 5 &&
-                    ObjectManager.Player.ManaPercent > Init.ComboMenu["rMana"].Cast<Slider>().CurrentValue)
+                if (Spells.R.IsReady() && Game.Time - LastRcast > 5 /* &&
+                    ObjectManager.Player.ManaPercent > Init.ComboMenu["rMana"].Cast<Slider>().CurrentValue*/
+                    )
                 {
                     Spells.CastR();
                 }

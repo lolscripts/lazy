@@ -364,17 +364,16 @@ namespace LazyLucian
             var rDmg = Player.GetSpellDamage(unit, SpellSlot.R)*Helpers.NumShots();
             var tDis = Player.Distance(unit.ServerPosition);
 
-            if (((unit.Distance(Player.ServerPosition) < Player.GetAutoAttackRange() &&
-                  Q.IsReady())) ||
-                (col.HitChance == HitChance.Collision &&
-                 col.CollisionObjects.OfType<Obj_AI_Minion>().Count() < 3 ||
+            if ((Q.IsReady() && Player.Distance(unit.ServerPosition) < 400) ||
+                ((col.HitChance == HitChance.Collision &&
+                 col.CollisionObjects.OfType<Obj_AI_Minion>().Count() > 3) ||
                  !unit.IsValidTarget()) ||
                 unit.HasBuffOfType(BuffType.Invulnerability) ||
                 unit.IsZombie ||
                 allies > 1)
                 return;
 
-            if (rDmg*0.8 > unit.Health && tDis < 700 && !Q.IsReady())
+            if (rDmg*0.8 > unit.Health && tDis < 700)
                 R.Cast(unit);
             else if (rDmg*0.7 > unit.Health && tDis < 800)
                 R.Cast(unit);

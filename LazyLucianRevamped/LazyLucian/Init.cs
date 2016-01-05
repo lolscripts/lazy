@@ -54,7 +54,7 @@ namespace LazyLucian
             ComboMenu.AddLabel("R - The Culling");
             ComboMenu.Add("useRkillable", new CheckBox("Use if target is killable"));
             ComboMenu.Add("useRlock", new CheckBox("Lock on Target"));
-            ComboMenu.Add("rMana", new Slider("Min Mana to use: ", 20, 1));
+            //ComboMenu.Add("rMana", new Slider("Min Mana to use: ", 20, 1));
             ComboMenu.AddSeparator();
 
             ComboMenu.AddLabel("Misc Settings (Combo)");
