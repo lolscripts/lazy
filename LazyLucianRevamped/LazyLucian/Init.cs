@@ -16,7 +16,7 @@ namespace LazyLucian
 
             Menu = MainMenu.AddMenu("Lazy Lucian", "LazyLucian");
             Menu.AddGroupLabel("Lazy Lucian");
-            Menu.AddLabel("by DamnedNooB");
+            Menu.AddLabel("LolScript.net");
             Menu.AddSeparator();
 
             //-------------------------------------------------------------------------------------------------------------------
@@ -32,34 +32,34 @@ namespace LazyLucian
             */
 
             ComboMenu = Menu.AddSubMenu("Combo", "Combo");
-            ComboMenu.AddGroupLabel("Combo Settings");
-            ComboMenu.AddLabel("Q - Piercing Light");
-            ComboMenu.Add("useQcombo", new CheckBox("Use in Combo"));
-            ComboMenu.Add("useQextended", new CheckBox("Use extended Q in Combo"));
-            ComboMenu.Add("qMana", new Slider("Min Mana to use: ", 20, 1));
+            ComboMenu.AddGroupLabel("Combo Configuracion");
+            ComboMenu.AddLabel("Q - Luz Lacerante");
+            ComboMenu.Add("useQcombo", new CheckBox("Usar en Combo"));
+            ComboMenu.Add("useQextended", new CheckBox("Uar Q en Combo"));
+            ComboMenu.Add("qMana", new Slider("Min Mna a usar: ", 20, 1));
             ComboMenu.AddSeparator();
 
-            ComboMenu.AddLabel("W - Ardent Blaze");
-            ComboMenu.Add("useWaaRange", new CheckBox("Use in AA - Range"));
-            ComboMenu.Add("useWalways", new CheckBox("Use out of AA - Range"));
-            ComboMenu.Add("wMana", new Slider("Min Mana to use: ", 20, 1));
+            ComboMenu.AddLabel("W - Resplandor Ardiente");
+            ComboMenu.Add("useWaaRange", new CheckBox("Usar en AA - Rango"));
+            ComboMenu.Add("useWalways", new CheckBox("Usar fuera de AA - Rango"));
+            ComboMenu.Add("wMana", new Slider("Min Mana a usar: ", 20, 1));
             ComboMenu.AddSeparator();
 
-            ComboMenu.AddLabel("E - Relentless Pursuit");
-            ComboMenu.Add("useEcombo", new CheckBox("Use E Logic"));
-            ComboMenu.Add("useEmouse", new CheckBox("Use E to Mouse"));
-            ComboMenu.Add("eMana", new Slider("Min Mana to use: ", 20, 1));
+            ComboMenu.AddLabel("E - Presecusion Implacable");
+            ComboMenu.Add("useEcombo", new CheckBox("Usar E Logica"));
+            ComboMenu.Add("useEmouse", new CheckBox("Usar E con Mouse"));
+            ComboMenu.Add("eMana", new Slider("Min Mana a usar: ", 20, 1));
             ComboMenu.AddSeparator();
 
-            ComboMenu.AddLabel("R - The Culling");
-            ComboMenu.Add("useRkillable", new CheckBox("Use if target is killable"));
-            ComboMenu.Add("useRlock", new CheckBox("Lock on Target"));
+            ComboMenu.AddLabel("R - El Sacrificio");
+            ComboMenu.Add("useRkillable", new CheckBox("Usar si el target es matable"));
+            ComboMenu.Add("useRlock", new CheckBox("Bloqueo en Target"));
             //ComboMenu.Add("rMana", new Slider("Min Mana to use: ", 20, 1));
             ComboMenu.AddSeparator();
 
-            ComboMenu.AddLabel("Misc Settings (Combo)");
-            ComboMenu.Add("spellWeaving", new CheckBox("Use Passive (Spellweaving)"));
-            ComboMenu.Add("useYoumuu", new CheckBox("Use Youmuu's GhostBlade for The Culling"));
+            ComboMenu.AddLabel("Otras config (Combo)");
+            ComboMenu.Add("spellWeaving", new CheckBox("Usar pasiva (Spellweaving)"));
+            ComboMenu.Add("useYoumuu", new CheckBox("Usar Youmuu'"));
 
             //-------------------------------------------------------------------------------------------------------------------
             /*
@@ -73,23 +73,23 @@ namespace LazyLucian
             *                                                               
             */
 
-            HarassMenu = Menu.AddSubMenu("Harass", "Harass");
-            HarassMenu.AddGroupLabel("Harass Settings");
-            HarassMenu.AddLabel("Q - Piercing Light");
-            HarassMenu.Add("useQharass", new CheckBox("Use in Harass"));
-            HarassMenu.Add("useQextended", new CheckBox("Use extended Q in Harass"));
-            HarassMenu.Add("qMana", new Slider("Min Mana to use: ", 20, 1));
+            HarassMenu = Menu.AddSubMenu("Tirar", "Tirar");
+            HarassMenu.AddGroupLabel("Tirar Config");
+            HarassMenu.AddLabel("Q - Luz Lacerante");
+            HarassMenu.Add("useQharass", new CheckBox("Usar en tirar"));
+            HarassMenu.Add("useQextended", new CheckBox("Usar extendida Q en tirar"));
+            HarassMenu.Add("qMana", new Slider("Min Mana a usar: ", 20, 1));
             HarassMenu.AddSeparator();
 
-            HarassMenu.AddLabel("W - Ardent Blaze");
-            HarassMenu.Add("useWaaRange", new CheckBox("Use in AA - Range"));
-            HarassMenu.Add("useWalways", new CheckBox("Use out of AA - Range"));
-            HarassMenu.Add("wMana", new Slider("Min Mana to use: ", 20, 1));
+            HarassMenu.AddLabel("W - Resplandor Ardiente");
+            HarassMenu.Add("useWaaRange", new CheckBox("Usar en AA - Rango"));
+            HarassMenu.Add("useWalways", new CheckBox("Usar fuera de AA - Rango"));
+            HarassMenu.Add("wMana", new Slider("Min Mana a usar: ", 20, 1));
             HarassMenu.AddSeparator();
 
-            HarassMenu.AddLabel("Misc Settings (Harass)");
+            HarassMenu.AddLabel("Otras Config (Tirar)");
             //HarassMenu.Add("manaCheck", new CheckBox("")); // soon(TM)
-            HarassMenu.Add("spellWeaving", new CheckBox("Use Passive (Spellweaving)"));
+            HarassMenu.Add("spellWeaving", new CheckBox("Usar Passiva (Spellweaving)"));
 
             //-------------------------------------------------------------------------------------------------------------------
             /*
@@ -104,26 +104,26 @@ namespace LazyLucian
             */
 
             FarmMenu = Menu.AddSubMenu("Farm", "Farm");
-            FarmMenu.AddGroupLabel("Farm Settings");
-            FarmMenu.AddLabel("Q - Piercing Light");
-            FarmMenu.Add("useQfarm", new CheckBox("Use in LaneClear"));
-            FarmMenu.Add("qManaLane", new Slider("Min Mana to use in LaneClear: ", 20, 1));
-            FarmMenu.Add("qMinionsLane", new Slider("Min Minions to use in LaneClear: ", 3, 1, 5));
+            FarmMenu.AddGroupLabel("Farm Config");
+            FarmMenu.AddLabel("Q - Luz Lacerante");
+            FarmMenu.Add("useQfarm", new CheckBox("Usar en LaneClear"));
+            FarmMenu.Add("qManaLane", new Slider("Min Mana a usar en LaneClear: ", 20, 1));
+            FarmMenu.Add("qMinionsLane", new Slider("Min Minions a usar en LaneClear: ", 3, 1, 5));
             FarmMenu.AddSeparator();
-            FarmMenu.Add("useQjungle", new CheckBox("Use in JungleClear"));
-            FarmMenu.Add("qManaJungle", new Slider("Min Mana to use in JungleClear: ", 20, 1));
-            FarmMenu.AddSeparator();
-
-            FarmMenu.AddLabel("W - Ardent Blaze");
-            FarmMenu.Add("useWfarm", new CheckBox("Use in LaneClear"));
-            FarmMenu.Add("wManaLane", new Slider("Min Mana to use in LaneClear: ", 20, 1));
-            FarmMenu.AddSeparator();
-            FarmMenu.Add("useWjungle", new CheckBox("Use in JungleClear"));
-            FarmMenu.Add("wManaJungle", new Slider("Min Mana to use in JungleClear: ", 20, 1));
+            FarmMenu.Add("useQjungle", new CheckBox("Usar en JungleClear"));
+            FarmMenu.Add("qManaJungle", new Slider("Min Mana a usar en JungleClear: ", 20, 1));
             FarmMenu.AddSeparator();
 
-            FarmMenu.AddLabel("Misc Settings (Farm)");
-            FarmMenu.Add("spellWeaving", new CheckBox("Use Passive (Spellweaving)"));
+            FarmMenu.AddLabel("W - Resplandor ardiente");
+            FarmMenu.Add("useWfarm", new CheckBox("Usar en LaneClear"));
+            FarmMenu.Add("wManaLane", new Slider("Min Mana a usar en LaneClear: ", 20, 1));
+            FarmMenu.AddSeparator();
+            FarmMenu.Add("useWjungle", new CheckBox("Usar en JungleClear"));
+            FarmMenu.Add("wManaJungle", new Slider("Min Mana a usar en JungleClear: ", 20, 1));
+            FarmMenu.AddSeparator();
+
+            FarmMenu.AddLabel("Otras config (Farm)");
+            FarmMenu.Add("spellWeaving", new CheckBox("Usar Passiva (Spellweaving)"));
 
             //-------------------------------------------------------------------------------------------------------------------
             /*
@@ -137,13 +137,13 @@ namespace LazyLucian
             *                                                  
             */
 
-            MiscMenu = Menu.AddSubMenu("Misc", "Misc");
-            MiscMenu.AddGroupLabel("Miscellaneous Settings");
+            MiscMenu = Menu.AddSubMenu("Otras", "Otras");
+            MiscMenu.AddGroupLabel("Diversas Configuraciones");
             MiscMenu.AddLabel("Anti Gapcloser Settings");
-            MiscMenu.Add("gapcloser", new CheckBox("Use E - to avoid non targeted"));
-            MiscMenu.Add("gapcloserT", new CheckBox("Use E - to avoid targeted"));
+            MiscMenu.Add("gapcloser", new CheckBox("Usar E - para evitar no específica"));
+            MiscMenu.Add("gapcloserT", new CheckBox("Usar E - para evitar dirigida"));
             MiscMenu.AddSeparator();
-            MiscMenu.AddGroupLabel("Other Settings");
+            MiscMenu.AddGroupLabel("Otras config");
             MiscMenu.Add("useKs", new CheckBox("Use KillSecure - Logic"));
 
             //-------------------------------------------------------------------------------------------------------------------
@@ -158,14 +158,14 @@ namespace LazyLucian
             *                                                          
             */
 
-            DrawMenu = Menu.AddSubMenu("Draw", "Draw");
-            DrawMenu.AddGroupLabel("Draw Settings");
-            DrawMenu.AddLabel("Spell Ranges");
-            DrawMenu.Add("drawQ", new CheckBox("Draw Q Range"));
-            DrawMenu.Add("drawQextended", new CheckBox("Draw Extended Q Range"));
-            DrawMenu.Add("drawW", new CheckBox("Draw W Range"));
-            DrawMenu.Add("drawE", new CheckBox("Draw E Range"));
-            DrawMenu.Add("drawR", new CheckBox("Draw R Range"));
+            DrawMenu = Menu.AddSubMenu("Circulos", "Circulos");
+            DrawMenu.AddGroupLabel("Circulos Config");
+            DrawMenu.AddLabel("Hechizos Rango");
+            DrawMenu.Add("drawQ", new CheckBox("Draw Q Rango"));
+            DrawMenu.Add("drawQextended", new CheckBox("Draw Extended Q Rango"));
+            DrawMenu.Add("drawW", new CheckBox("Draw W Rango"));
+            DrawMenu.Add("drawE", new CheckBox("Draw E Rango"));
+            DrawMenu.Add("drawR", new CheckBox("Draw R Rango"));
 
             //-------------------------------------------------------------------------------------------------------------------
             /*
